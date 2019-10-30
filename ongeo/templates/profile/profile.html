@@ -1,0 +1,44 @@
+{% extends 'ongeo/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3"></div>
+
+        <div class="col-md-6">
+            <div class="content-section container">
+                <div class="media">
+                    <img class=" prof-img" src="{{user.profile.profile_pic.url}}" id="prof-pic">
+                    <p>{{user.profile.profile_pic.url}}</p>
+                    <div class="media-body">
+                        <h2 class="account-heading">{{user.username}}</h2>
+                        <p class="text-secondary">{{user.email}}</p>
+                    </div>
+                </div>
+
+                <form action="" method="POST" enctype="multipart/form-data" class="">
+                    {% csrf_token %}
+                    <fieldset class="form-group ">
+                        <legend class="border-bottom mb-4 text-success text-center"> Update Your Profile Info</legend>
+                        {{u_form|crispy}}
+                        {{p_form|crispy}}
+                    </fieldset>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary btn-sm sign form-control" value="Update"
+                            id='update'>
+                    </div>
+
+
+
+                </form>
+
+            </div>
+
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+
+
+    {% endblock %}
