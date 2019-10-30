@@ -1,0 +1,61 @@
+{%extends "ongeo/base.html"%}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+
+
+    <div>
+        {% if form.errors %}
+        <p> Some Information Might be Incorrect </p>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+
+            <div class="card card-default reg-panel">
+
+                <div class="card-header">
+                    <h3 class="text-center inst">On-Geo</h3>
+                </div>
+                <div class="text-muted">
+                    <p>Are you a member? <a href="#">Login Now</a></p>
+                </div>
+                <div class="card-body bg-dark">
+
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-light btn-sm btn-outline-primary  form-control"
+                                value="Sign Up" id='sign'>
+                        </div>
+
+                        <div class="texcarded">
+                            <p class="text-center text-white">By signing up, you agree to our Terms , Data Policy and
+                                Cookies
+                                Policy .</p>
+                        </div>
+
+
+                    </form>
+
+                </div>
+                <div class="panel panel-white">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3"></div>
+
+
+
+
+
+
+
+    </div>
+</div>
+
+
+{% endblock %}
