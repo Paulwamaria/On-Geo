@@ -3,10 +3,12 @@ from django.core import serializers
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.contrib import messages
+from django.views.generic import CreateView,UpdateView,DeleteView
 from geopy.distance import distance as geopy_distance
 from .forms import OnGeoRegistrationForm,UserUpdateForm,ProfileUpdateForm, UserAttendanceForm
-from .models import Profile, Organisation, Post,Attendance
+from .models import Profile, Organisation, Post,Attendance,Notification
 
 def index(request):
     message = "Welcome to On-Geo Manager"
@@ -114,7 +116,8 @@ def get_distance(request):
         user_position = (user_latitude, user_longitude)
 
         # fixed_position = (41.8781, 87.6298)
-        fixed_position = (-1.3034531999999999, 36.7927116)
+        # fixed_position = (-1.3034531999999999, 36.7927116)
+        fixed_position = (-1.2836864000000001, 36.831232)
 
 
         distance = geopy_distance(user_position, fixed_position)
@@ -153,3 +156,27 @@ def profile(request):
         'p_form':p_form
     }
     return render(request, 'profile/profile.html',context)
+
+
+class NotificationCreateView(LoginRequiredMixin,CreateView):
+     
+    model = Notification
+    success_url = ('/')
+    fields = ['content']
+
+    def form_valid(self,form):
+        form.instance.user = self.request.user
+        form.instance.organisation = Organisation.objects.get(organisation_name = self.request.user.profile.organisation)
+        return super().form_valid(form)
+
+
+class PostCreateView(LoginRequiredMixin,CreateView):
+     
+    model = Post
+    success_url = ('/')
+    fields = ['title','image','content']
+
+    def form_valid(self,form):
+        form.instance.user = self.request.user
+        form.instance.organisation = Organisation.objects.get(organisation_name = self.request.user.profile.organisation)
+        return super().form_valid(form)

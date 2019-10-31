@@ -1,5 +1,5 @@
 <!--Navbar -->
-<nav class="mb-1 navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="mb-1 navbar navbar-expand-lg navbar-dark bg-info">
     <a class="navbar-brand ong" href="#">On-Geo Manager</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
         aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
@@ -8,7 +8,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link nvs" href="#">Home
+                <a class="nav-link nvs" href="{% url 'home' %}">Home
                     <span class="sr-only">(current)</span>
                 </a>
             </li>
@@ -38,8 +38,12 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-default"
                     aria-labelledby="navbarDropdownMenuLink-333">
-                    {% if user.is_auhtenticated %}
-                    <a class="dropdown-item nvs" href="{% url 'profile' %}">Profile</a>
+                    {% if user.is_authenticated %}
+                    <a class="dropdown-item nvs" href="">{{user.username}}</a>
+
+                    <a class="dropdown-item nvs" href="{% url 'attendance' %}">Check in</a>
+
+                    <a class="dropdown-item nvs" href="{% url 'profile-detail' user.username%}">Profile</a>
 
                     <a class="dropdown-item nvs" href="{% url 'logout' %}">logout</a>
                     {% else %}

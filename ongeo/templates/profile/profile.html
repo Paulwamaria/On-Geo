@@ -1,4 +1,4 @@
-{% extends 'ongeo/base.html' %}
+{% extends 'ongeo/base2.html' %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -6,11 +6,11 @@
     <div class="row">
         <div class="col-md-3"></div>
 
-        <div class="col-md-6">
+        <div class="col-md-6 bg-info">
             <div class="content-section container">
                 <div class="media">
                     <img class=" prof-img" src="{{user.profile.profile_pic.url}}" id="prof-pic">
-                    <p>{{user.profile.profile_pic.url}}</p>
+               
                     <div class="media-body">
                         <h2 class="account-heading">{{user.username}}</h2>
                         <p class="text-secondary">{{user.email}}</p>

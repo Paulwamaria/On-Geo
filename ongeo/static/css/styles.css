@@ -1,9 +1,11 @@
 body{
-    background-image:url(../media/bg10.jpg);
+    background-image:url(../media/bg06.jpg);
 }
+
+
 .overlay{
     background-color: rgba(0, 0, 0, 0.74);
-    height:100vh;
+    height:300vh;
     margin-top:0px;
 }
 .welcam{
