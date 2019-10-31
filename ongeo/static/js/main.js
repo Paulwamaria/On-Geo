@@ -26,9 +26,9 @@ function onPositionUpdate(position) {
             if (data.distance < 1) {
                 $("#fname").val(data.user_data.first_name)
                 $("#lname").val(data.user_data.last_name)
-                console.log(data.user_data);
-                console.log("You are within Moringa Vicinity!");
-                $("ol#inattendance").prepend(data.user_data.first_name + " " + data.user_data.last_name);
+                
+                $(".card-b").show()
+                $("ol#inattendance").prepend("<li>"+ data.user_data.first_name + " " + data.user_data.last_name + "</li>");
                 $.ajax({
                     url:'/save_to_db/',
                     method:'GET',
@@ -51,7 +51,7 @@ function onPositionUpdate(position) {
                     }
                 })
             } else if (data.distance > 1) {
-                document.getElementById("outb").innerHTML = 'We we are sorry the system cant check you in, you are not Within Moringa'
+                document.getElementById("outb").innerHTML = "We are sorry the system can\'t check you in, you are not Within Moringa"
                 console.log("Sorry You are out of bound");
             }
         });
