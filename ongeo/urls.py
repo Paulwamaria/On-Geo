@@ -13,6 +13,7 @@ urlpatterns=[
     path('logout/', auth_views.LogoutView.as_view(template_name='profile/logout.html'), name='logout'),
     path('profile/',views.profile, name = 'profile'),
     path('attendance/',views.attendance, name = 'attendance'),
+    path('save_to_db/',views.save_to_db, name = 'save-to-db'),
     path('distance/',views.get_distance, name = 'get-distance'),
     path('profile/details/<str:username>/',views.display_profile, name = 'profile-detail'),
 ]
