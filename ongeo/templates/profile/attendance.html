@@ -1,0 +1,98 @@
+{%extends "ongeo/base.html"%}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <div class="out-of-bound text-center mt-5 mb-5 text-danger">
+        <h3 class="out-of-bound text-center mt-5 text-danger" id="outb"></h3>
+
+    </div>
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center text-info">Inattendance</h3>
+                </div>
+
+                <div class="card-body">
+                    <ol class="" id="inattendance">
+
+                        </0l>
+
+                </div>
+            </div>
+
+             {% if form.errors %}
+            <p> Some Information Might be Incorrect </p>
+            {% endif %}
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+
+                </div>
+                <div class="text-muted">
+                    <h4 class="text-center text-success mt-5">brabrabra...</h4>
+                </div>
+                <div class="panel-body">
+
+                    <form action="" method="POST" enctype="multipart/form-data" id="attnd">
+                        {% csrf_token %}
+                        {{attnd_form|crispy}}
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-info btn-sm sign form-control" value="Check In"
+                                id='sign'>
+
+                        </div>
+
+
+
+
+                    </form>
+
+                </div>
+
+
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            {% if form.errors %}
+            <p> Some Information Might be Incorrect </p>
+            {% endif %}
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+
+                </div>
+                <div class="text-muted">
+                    <h4 class="text-center text-success mt-5">brabrabra...</h4>
+                </div>
+                <div class="panel-body">
+
+                    <form action="" method="POST" enctype="multipart/form-data" id="attnd">
+                        {% csrf_token %}
+                        {{attnd_form|crispy}}
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-info btn-sm sign form-control" value="Check In"
+                                id='sign'>
+
+                        </div>
+
+
+
+
+                    </form>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
+{% endblock %}
