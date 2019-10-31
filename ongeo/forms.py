@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile, Organisation
+from .models import Profile, Organisation, UserCoords, Attendance
 
 
 
@@ -62,4 +62,23 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['profile_pic','bio', 'location']
+
+
+
+class UserCoordinateForm(forms.ModelForm):
+    class Meta:
+        model = UserCoords
+        fields = ['coords_long','coords_latt']
+
+
+
+
+class UserAttendanceForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=256,required = True, label='', widget=forms.TextInput(attrs={'class':'form-control','placeholder':'First Name','id':'fname'}))
+    last_name = forms.CharField(max_length=256,required = True, label='', widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Last Name','id':'lname'}))
+    class Meta:
+        model = Attendance
+        fields = ['first_name','last_name']
+
+
 
