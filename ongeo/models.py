@@ -28,7 +28,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic =  models.ImageField(upload_to='media/profile_pics', default='media/default.jpg')
     bio = models.TextField()
-    organisation = models.CharField(max_length=60, blank=True,null=True)
+    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE,related_name = 'profiles', blank=True,null=True)
     location= models.PointField(null=True)
    
 
@@ -90,7 +90,7 @@ class Attendance(models.Model):
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
     created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
+    updated_on = models.DateTimeField(auto_now=True,blank=True,null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -100,4 +100,23 @@ class Attendance(models.Model):
         self.save()
 
     def delete_attendance(self):
+        self.delete()
+
+class Notification(models.Model):
+    content = models.TextField()
+    organisation = models.ForeignKey(Organisation, related_name='notifications', on_delete=models.CASCADE)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+
+
+    def __str__(self):
+        return self.content
+
+
+    def save_notification(self):
+        self.save()
+
+    def delete_notification(self):
         self.delete()
