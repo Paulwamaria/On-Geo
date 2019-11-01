@@ -8,6 +8,7 @@ django-heroku==0.3.1
 django-registration==2.4.1
 geographiclib==1.50
 geopy==1.20.0
+gunicorn==19.9.0
 Pillow==6.2.1
 
 psycopg2==2.8.4
