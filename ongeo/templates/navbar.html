@@ -1,6 +1,6 @@
 <!--Navbar -->
-<nav class="mb-1 navbar navbar-expand-lg navbar-dark bg-info">
-    <a class="navbar-brand ong" href="#">On-Geo Manager</a>
+<nav class="mb-1 navbar navbar-expand-lg navbar-dark bg-info text-white">
+    <a class="navbar-brand ong" href="{% url 'home' %}">On-Geo Manager</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
         aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -13,7 +13,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nvs" href="#">About</a>
+                <a class="nav-link nvs" href="{% url 'about' %}">About</a>
             </li>
 
 
@@ -21,10 +21,10 @@
                 <a class="nav-link dropdown-toggle nvs" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">Communities
                 </a>
-                <div class="dropdown-menu dropdown-default" aria-labelledby="navbarDropdownMenuLink-333">
-                    <a class="dropdown-item nvs" href="#">Moringa</a>
-                    <a class="dropdown-item nvs" href="#">Safaricom</a>
-                    <a class="dropdown-item nvs" href="#">Airtel</a>
+                <div class="dropdown-menu dropdown-default bg-info" aria-labelledby="navbarDropdownMenuLink-333">
+                    <a class="dropdown-item nvs" href="{% url 'posts' %}">Moringa</a>
+                    <a class="dropdown-item nvs" href="{% url 'setup' %}"></a>Safaricom</a>
+                    <a class="dropdown-item nvs" href="{% url 'setup' %}">Airtel</a>
                 </div>
             </li>
         </ul>
@@ -36,7 +36,7 @@
                     aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-user"></i>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                <div class="dropdown-menu dropdown-menu-right dropdown-default bg-info  text-white"
                     aria-labelledby="navbarDropdownMenuLink-333">
                     {% if user.is_authenticated %}
                     <a class="dropdown-item nvs" href="">{{user.username}}</a>
@@ -44,6 +44,10 @@
                     <a class="dropdown-item nvs" href="{% url 'attendance' %}">Check in</a>
 
                     <a class="dropdown-item nvs" href="{% url 'profile-detail' user.username%}">Profile</a>
+
+                    <a class="dropdown-item nvs" href="{% url 'post-create'%}">upload create-post</a>
+
+                    <a class="dropdown-item nvs" href="{% url 'notification-create'%}">Add Notice</a>
 
                     <a class="dropdown-item nvs" href="{% url 'logout' %}">logout</a>
                     {% else %}
