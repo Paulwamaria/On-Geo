@@ -44,6 +44,7 @@ class Profile(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=60)
+    links = models.URLField(blank=True, null=True)
     content = models.TextField()
     organisation = models.ForeignKey(Organisation, related_name='posts', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='media/blog/', blank = True, null =True)
