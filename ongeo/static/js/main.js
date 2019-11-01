@@ -23,7 +23,7 @@ function onPositionUpdate(position) {
         .done(function (data) {
                 nams = $("#lname").val(data.last_name)
 
-            if (data.distance < 1) {
+            if (data.distance < 30) {
                 $("#fname").val(data.user_data.first_name)
                 $("#lname").val(data.user_data.last_name)
                 
