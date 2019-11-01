@@ -13,14 +13,14 @@
             <div class="row">
 
                 <div class="col-md-6">
-                    <div class="card">
+                    <div class="card bg-info mt-5">
                         <div class="card-header">
                             {% if user.profile == profile %}
-                            <a class="text-info" href="{% url 'profile' %}">Edit Profile</a>
+                            <a class="text-primary bg-white" href="{% url 'profile' %}">Edit Profile</a>
                             {% endif %}
-                            <h4 class="text-center text-dark ong">{{profile.user.username}} Profile</h4>
+                            <h4 class="text-center text-white ong">{{profile.user.username}} Profile</h4>
 
-                            <img class="full-profile img-responsive" src="{{profile.profile_pic.url}}" id="prof-pic">
+                            <img class="full-profile prof-img img-responsive" src="{{profile.profile_pic.url}}" id="prof-pic">
 
 
                         </div>
@@ -28,12 +28,14 @@
                         <div class="card-body">
 
 
-                            <P class="text-dark">Bio: {{profile.bio}}</P>
+                            <P class="text-white">Bio: {{profile.bio}}</P>
+
+                            <P class="text-white">Community: {{profile.organisation}}</P>
 
                         </div>
                         <div class="card-footer">
 
-                            <p class="text-dark">Email: {{profile.user.email}}</p>
+                            <p class="text-white">Email: {{profile.user.email}}</p>
                         </div>
                     </div>
                 </div>
@@ -41,7 +43,7 @@
 
 
                 <div class="col-md-6">
-                    <h2 class="text-center text-dark ong">Posts by {{profile.user.username}}</h2>
+                    <h2 class="text-center text-white mt-4 ong">Posts by {{profile.user.username}}</h2>
                     <div class="row">
 
 
@@ -51,7 +53,7 @@
                             <div class=" card ">
 
                                 <div class="card-body">
-                                    <h6 class="text-center text-success">{{post.title}}</h6>
+                                    <h6 class="text-center text-info">{{post.title}}</h6>
                                     {% if post.image %}
                                     <img src="{{post.image.url}}" class="img-responsive prof-imgs" id='' alt=" ">
                                     {% endif %}

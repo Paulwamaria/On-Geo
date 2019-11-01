@@ -52,7 +52,8 @@ function onPositionUpdate(position) {
                 })
             } else if (data.distance > 1) {
                 document.getElementById("outb").innerHTML = "We are sorry the system can\'t check you in, you are not Within Moringa"
-                console.log("Sorry You are out of bound");
+  
+               
             }
         });
     console.log(name);

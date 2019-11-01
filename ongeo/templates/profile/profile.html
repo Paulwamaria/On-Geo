@@ -6,10 +6,10 @@
     <div class="row">
         <div class="col-md-3"></div>
 
-        <div class="col-md-6 bg-info">
+        <div class="col-md-6 bg-info mt-5">
             <div class="content-section container">
                 <div class="media">
-                    <img class=" prof-img" src="{{user.profile.profile_pic.url}}" id="prof-pic">
+                    <img class="prof-img" src="{{user.profile.profile_pic.url}}" id="prof-pic">
                
                     <div class="media-body">
                         <h2 class="account-heading">{{user.username}}</h2>
@@ -20,7 +20,7 @@
                 <form action="" method="POST" enctype="multipart/form-data" class="">
                     {% csrf_token %}
                     <fieldset class="form-group ">
-                        <legend class="border-bottom mb-4 text-success text-center"> Update Your Profile Info</legend>
+                        <legend class="border-bottom mb-4 text-white text-center"> Update Your Profile Info</legend>
                         {{u_form|crispy}}
                         {{p_form|crispy}}
                     </fieldset>

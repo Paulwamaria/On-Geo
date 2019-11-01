@@ -1,32 +1,74 @@
-body{
-    background-image:url(../media/bg10.jpg);
+body {
+    background-image: url(../media/bg10.jpg);
 }
-.overlay{
+
+.overlay {
     background-color: rgba(0, 0, 0, 0.74);
-    height:100vh;
-    margin-top:0px;
+    height: 100vh;
+    margin-top: 0px;
 }
-.welcam{
+
+.welcam {
     padding-top: calc(50vh - 150px);
     font-family: 'Spirax', cursive;
-    font-size:80px;
-  }
+    font-size: 80px;
+}
 
-.ong{
+.ong {
     font-family: 'Abril Fatface', cursive;
     font-size: 50px;
 }
-.nvs{
+
+.nvs {
     font-family: 'Abril Fatface', cursive;
     font-size: 18px;
 }
-.out-of-bound{
-    margin-top:20px;
+
+.out-of-bound {
+    margin-top: 20px;
 }
-.card-b{
-display:none;
+
+.card-b {
+    display: none;
 }
-.out-of-bound{
+
+.out-of-bound {
     padding-top: calc(5vh - 2vh);
-    font-size:40px;
+    font-size: 40px;
+}
+
+.op {
+    opacity: 0.75;
+}
+
+.l-out{
+    padding-top: calc(30vh - 2vh);
+    font-size: 40px;
+}
+.prof-img{
+    width:15%;
+    height:auto;
+    border-radius: 50%;
+}
+
+#imag {
+    margin-top:2px;
+    width: 400px;
+    max-height: 300px;
+    border-radius: 5%;
+
+}
+.post-img{
+    margin-top:2px;
+    width: 500px;
+    max-height: 400px;
+    border-radius: 5%;
+
+}
+.prof-imgs{
+    margin-top:2px;
+    width: 300px;
+    max-height: 200px;
+    border-radius: 5%;
+
 }
