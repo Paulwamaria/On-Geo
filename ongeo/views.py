@@ -19,6 +19,18 @@ def index(request):
     }
     return render(request,"ongeo/index.html", context)
 
+
+def about(request):
+    return render(request,'ongeo/about.html')
+
+
+
+def no_setup(request):
+    return render(request,'ongeo/no-setup.html')
+
+
+
+
 def register(request):
     if request.method == 'POST':
         form = OnGeoRegistrationForm(request.POST)
@@ -116,8 +128,8 @@ def get_distance(request):
         user_position = (user_latitude, user_longitude)
 
         # fixed_position = (41.8781, 87.6298)
-        # fixed_position = (-1.3034531999999999, 36.7927116)
-        fixed_position = (-1.2836864000000001, 36.831232)
+        fixed_position = (-1.3034531999999999, 36.7927116)
+        # fixed_position = (-1.2836864000000001, 36.831232)
 
 
         distance = geopy_distance(user_position, fixed_position)
@@ -174,9 +186,68 @@ class PostCreateView(LoginRequiredMixin,CreateView):
      
     model = Post
     success_url = ('/')
-    fields = ['title','image','content']
+    fields = ['title','image','content','links']
 
     def form_valid(self,form):
         form.instance.user = self.request.user
         form.instance.organisation = Organisation.objects.get(organisation_name = self.request.user.profile.organisation)
         return super().form_valid(form)
+
+
+class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+     
+    model = Post
+    success_url=('/')
+    fields = ['title','image','content','links']
+
+
+    def form_valid(self,form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+    def test_func(self):
+        post = self.get_object()
+
+        if self.request.user == post.user:
+            return True
+
+        return False
+
+    def get_redirect_url(self,pk, *args, **kwargs):
+        obj = get_object_or_404(Post, pk = pk)
+        url= obj.get_absolute_url()
+      
+      
+        return url
+
+class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model = Post
+    success_url = ('/')
+    def test_func(self):
+        post = self.get_object()
+
+        if self.request.user == post.user:
+            return True
+
+        return False
+
+
+@login_required
+def post(request):
+  
+    profile=Profile.objects.get(user=request.user)
+    posts = Post.objects.filter(organisation__organisation_name=profile.organisation)
+    notifications = Notification.objects.filter(organisation__organisation_name=profile.organisation)
+    
+    
+
+    context={
+        "posts":posts,
+        "notifications":notifications,
+      
+    }
+
+    return render(request,'ongeo/posts.html',context)
+
+
