@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.gis.admin import OSMGeoAdmin
-from.models import Profile, Organisation,Post, UserCoords,Attendance
+from.models import Profile, Organisation,Post,Attendance,AllLogin,AllAtendees
 
 # Register your models here.
 @admin.register(Organisation)
@@ -10,19 +10,24 @@ class OrganisationAdmin(OSMGeoAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(OSMGeoAdmin):
-    list_display = ('user', 'location')
+    list_display = ('user','profile_pic','bio')
 
 @admin.register(Post)
 class PostAdmin(OSMGeoAdmin):
     list_display = ('title', 'content')
 
-  
-@admin.register(UserCoords)
-class UserCoordsAdmin(OSMGeoAdmin):
-    # list_display = (' coords_long',' coords_long')
-    pass
+
 
   
 @admin.register(Attendance)
 class AttendanceAdmin(OSMGeoAdmin):
     pass
+
+@admin.register(AllLogin)
+class AllLoginAdmin(OSMGeoAdmin):
+    pass
+
+
+@admin.register(AllAtendees)
+class AllAtendeesAdmin(OSMGeoAdmin):
+   list_display = ('user', 'first_name','last_name')
