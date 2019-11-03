@@ -10,8 +10,10 @@ from . import views
 urlpatterns=[
     path('',views.index,name='home'),
     path('about/',views.about,name='about'),
-     path('setup/',views.no_setup,name='setup'),
+    path('setup/',views.no_setup,name='setup'),
     path('posts/',views.post,name='posts'),
+    path('logins/',views.attend,name='logins'),
+    path('attends/',views.attendees_list,name='attends'),
     path('register/',views.register, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='profile/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='profile/logout.html'), name='logout'),
