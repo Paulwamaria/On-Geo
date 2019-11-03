@@ -116,5 +116,9 @@ class AllAtendees(models.Model):
     
     checked_in_on= models.DateTimeField(auto_now_add= True)
 
+    last_seen= models.DateTimeField(auto_now= True,blank=True, null=True)
+
+  
+
     def __str__(self):
         return str(self.user) + ': ' + str(self.created_on)
