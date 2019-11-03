@@ -2,6 +2,10 @@ $(document).ready(function () {
     navigator.geolocation.getCurrentPosition(onPositionUpdate);
 });
 
+// function getLoc(){
+//     navigator.geolocation.getCurrentPosition(onPositionUpdate);
+// }
+
 
 function onPositionUpdate(position) {
     var lat = position.coords.latitude;
@@ -20,6 +24,7 @@ function onPositionUpdate(position) {
 
             // }
         })
+
         .done(function (data) {
                 nams = $("#lname").val(data.last_name)
 
@@ -34,7 +39,8 @@ function onPositionUpdate(position) {
                     method:'GET',
                     data:{
                        'first_name':data.user_data.first_name,
-                        'last_name':data.user_data.last_name
+                        'last_name':data.user_data.last_name,
+                      
                     },
                     statusCode:{
                         404:function(){
@@ -50,7 +56,7 @@ function onPositionUpdate(position) {
                         window.location.replace('/')
                     }
                 })
-            } else if (data.distance > 1) {
+            } else if (data.distance > 30) {
                 document.getElementById("outb").innerHTML = "We are sorry the system can\'t check you in, you are not Within Moringa"
   
                

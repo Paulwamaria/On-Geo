@@ -20,7 +20,7 @@ body {
 }
 
 .nvs {
-    font-family: 'Abril Fatface', cursive;
+    font-family: 'Spirax', cursive;
     font-size: 18px;
 }
 
@@ -79,4 +79,11 @@ body {
 }
 .fs{
 font-size:30px;
+}
+.nvs:hover{
+    background-color:blue;
+
+}
+.nvs a:hover{
+    color:black;
 }
