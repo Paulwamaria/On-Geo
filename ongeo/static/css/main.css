@@ -85,5 +85,8 @@ font-size:30px;
 
 }
 .nvs a:hover{
-    color:black;
+    color:blue;
+}
+.switch-com{
+    padding-top: calc(25vh - 2vh);
 }

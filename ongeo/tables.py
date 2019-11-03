@@ -8,4 +8,4 @@ class AttendeesTable(tables.Table):
         
         model = AllAtendees
         template_name = "django_tables2/bootstrap.html"
-        fields = ("user","checked_in_on","first_name","last_name" )
+        fields = ("user","checked_in_on","last_seen","first_name","last_name" )

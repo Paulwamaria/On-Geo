@@ -27,6 +27,10 @@
                     <a class="dropdown-item nvs" href="{% url 'setup' %}">Airtel</a>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link nvs" href="{% url 'posts' %}"><strong>Active Community: </strong>{{user.profile.community}}</a>
+            </li>
+
 
         </ul>
         <ul class="navbar-nav ml-auto nav-flex-icons">
@@ -51,6 +55,8 @@
                     <a class="dropdown-item nvs" href="{% url 'post-create'%}">upload</a>
 
                     <a class="dropdown-item nvs" href="{% url 'notification-create'%}">Add Notice</a>
+
+                    <a class="dropdown-item nvs" href="{% url 'switch-community' %}">Switch Community</a>
 
                     <a class="dropdown-item nvs" href="{% url 'logout' %}">logout</a>
                     {% else %}
