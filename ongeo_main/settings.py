@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'crispy_forms',
+    'django_tables2',
 ]
 
 MIDDLEWARE = [
@@ -134,7 +135,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
