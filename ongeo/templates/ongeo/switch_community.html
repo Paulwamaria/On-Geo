@@ -1,0 +1,52 @@
+{% extends 'ongeo/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-6">
+        <div class="content-section container">
+            <div class="media switch-com">
+                <img class=" prof-img" src="{{user.profile.profile_pic.url}}" id="prof-pic">
+                <div class="media-body">
+                    <h2 class="account-heading text-info">{{user.username}}</h2>
+                    <p class="text-info">{{user.email}}</p>
+                </div>
+            </div>
+
+            <form action="" method="POST" enctype="multipart/form-data" class="bg-info">
+                {% csrf_token %}
+                <fieldset class="form-group ">
+                    <legend class="border-bottom mb-4 text-white text-center"> Select a community</legend>
+                    {{n_form|crispy}}
+
+                    {% for radio in c_form.community %}
+
+                    <label class="text-white ml-3" for="{{ radio.id_for_label }}">
+                        {{ radio.choice_label }}
+                        <span class="radio">{{ radio.tag }}</span>
+                    </label>
+                    {% endfor %}
+
+                </fieldset>
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary btn-sm sign form-control" value="Switch Community"
+                        id='update'>
+                </div>
+
+
+
+            </form>
+
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+
+
+    {% endblock %}
