@@ -26,10 +26,10 @@ class Organisation(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_pic =  models.ImageField(upload_to='media/profile_pics', default='media/default.jpg')
+    profile_pic = models.ImageField(upload_to='media/profile_pics', default='media/default.jpg')
     bio = models.TextField()
-    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE,related_name = 'profiles', blank=True,null=True)
-    location= models.PointField(null=True)
+    community = models.ForeignKey(Organisation, related_name='profiles', on_delete=models.CASCADE, blank=True, null=True)
+ 
    
 
 
@@ -63,28 +63,6 @@ class Post(models.Model):
 
     def delete_post(self):
         self.delete()
-
-
-class UserCoords(models.Model):
-    coords_long = models.IntegerField()
-    coords_latt = models.IntegerField()
-    organisation = models.ForeignKey(Organisation, related_name='usercoords', on_delete=models.CASCADE)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank = True)
-    
-
-
-    def __str__(self):
-        return f'{self. coords_long} {self.coords_latt}'
-
-
-    def save_usercoords(self):
-        self.save()
-
-    def delete_usercoords(self):
-        self.delete()
-
 
 class Attendance(models.Model):
     organisation = models.ForeignKey(Organisation, related_name='inattendance', on_delete=models.CASCADE)
@@ -121,3 +99,22 @@ class Notification(models.Model):
 
     def delete_notification(self):
         self.delete()
+
+
+
+class AllLogin(models.Model):
+    user= models.ForeignKey(User, on_delete=models.CASCADE)
+    date= models.DateTimeField(auto_now_add= True)
+
+    def __str__(self):
+        return str(self.user) + ': ' + str(self.date)
+
+class AllAtendees(models.Model):
+    user= models.ForeignKey(User,on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=60, blank=True, null=True)
+    last_name = models.CharField(max_length=60, blank=True, null=True)
+    
+    checked_in_on= models.DateTimeField(auto_now_add= True)
+
+    def __str__(self):
+        return str(self.user) + ': ' + str(self.created_on)
