@@ -1,0 +1,16 @@
+{% extends 'ongeo/base.html' %}
+{% load django_tables2 %}
+
+
+{% block content %}
+<div class="container bg-white">
+    <h2 class="text-info text-center">In attendance today:</h2>
+    <div class="">
+            {% render_table table %}
+    </div>
+ 
+</div>
+
+
+{% endblock %}
+
