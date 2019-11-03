@@ -7,8 +7,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.contrib import messages
 from django.views.generic import CreateView,UpdateView,DeleteView
 from geopy.distance import distance as geopy_distance
+from datetime import date
 from .forms import OnGeoRegistrationForm,UserUpdateForm,ProfileUpdateForm, UserAttendanceForm
-from .models import Profile, Organisation, Post,Attendance,Notification
+from .models import Profile, Organisation, Post,Attendance,Notification, AllLogin, AllAtendees
+from .tables import AttendeesTable
 
 def index(request):
     message = "Welcome to On-Geo Manager"
@@ -100,19 +102,31 @@ def display_profile(request,username):
 
 def save_to_db(request):
     if request.method == "GET":
-        org = request.user.profile.organisation
+        org = request.user.profile.community
+        distance = request.GET.get('distance')
         print("****************",org)
         first_name = request.GET.get('first_name')
         last_name = request.GET.get('last_name')
-        initial_count= Attendance.objects.all().count()
-        attendant = Attendance.objects.filter(first_name=first_name, last_name=last_name).first()
-        if attendant == None:
-            attendant = Attendance(first_name=first_name, last_name=last_name)
-            attendant.organisation = org
-            attendant.save()
+        initial_count= AllAtendees.objects.all().count()
+       
+        # attendant = Attendance.objects.filter(first_name=first_name, last_name=last_name).first()
+        # if attendant == None:
+        #     attendant = Attendance(first_name=first_name, last_name=last_name)
+        #     attendant.organisation = org
+        #     attendant.save()
 
+
+        attendee = AllAtendees.objects.filter(user = request.user,checked_in_on__date = date.today())
+        print("nananana", attendee.count())
+        if attendee.count() == 0:
+            AllAtendees.objects.create(user=request.user, first_name=first_name, last_name =last_name)
+    
+
+        attendees =AllAtendees.objects.all().count()
         attendants = Attendance.objects.all().count()
-        if initial_count < attendants:
+        # todays_attendants = Attendance.objects.filter(created_on__date=date.today()).count()
+        # print (todays_attendants)
+        if initial_count < attendees:
             return JsonResponse({'saved':True})
         else:
             return JsonResponse({'saved':False})
@@ -128,18 +142,19 @@ def get_distance(request):
         user_position = (user_latitude, user_longitude)
 
         # fixed_position = (41.8781, 87.6298)
-        #fixed_position = (-1.3034531999999999, 36.7927116)
-        fixed_position = (-1.2836864000000001, 36.831232)
+        fixed_position = (-1.3034531999999999, 36.7927116)
+        #fixed_position = (-1.271398, 36.835328)
 
 
-        dista = geopy_distance(user_position, fixed_position)
-        distance = dista.meters
+        distance = geopy_distance(user_position, fixed_position)
+        
         my_user ={
             "first_name":user.first_name,
             "last_name":user.last_name
         } 
+        dist = distance.meters
         context = {
-            "distance":distance,
+            "distance":dist,
             "user":serialized_user,
             "user_data":my_user
         }
@@ -157,7 +172,10 @@ def profile(request):
         p_form = ProfileUpdateForm(request.POST,request.FILES,instance = request.user.profile)    
         if u_form.is_valid and p_form.is_valid():
             u_form.save()
-            p_form.save()
+            profile = p_form.save()
+            profile.profile_pic = p_form.cleaned_data['profile_pic']
+            profile.save()
+        return redirect("home")
     else:
         u_form = UserUpdateForm(instance = request.user)
         
@@ -191,7 +209,7 @@ class PostCreateView(LoginRequiredMixin,CreateView):
 
     def form_valid(self,form):
         form.instance.user = self.request.user
-        form.instance.organisation = Organisation.objects.get(organisation_name = self.request.user.profile.organisation)
+        form.instance.organisation = Organisation.objects.get(organisation_name = self.request.user.profile.community)
         return super().form_valid(form)
 
 
@@ -238,8 +256,10 @@ class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
 def post(request):
   
     profile=Profile.objects.get(user=request.user)
-    posts = Post.objects.filter(organisation__organisation_name=profile.organisation)
-    notifications = Notification.objects.filter(organisation__organisation_name=profile.organisation)
+    posts = Post.objects.filter(organisation__organisation_name=profile.community)
+    notifications = Notification.objects.filter(organisation__organisation_name=profile.community)
+    
+
     
     
 
@@ -250,5 +270,35 @@ def post(request):
     }
 
     return render(request,'ongeo/posts.html',context)
+
+
+
+def attend(request):
+    attendee = AllAtendees.objects.filter(user = request.user,created_on__date=date.today())
+    if attendee == None:
+        AllAtendees.objects.create(user=request.user, f_name=request.user.first_name, l_name = request.user.last_name)
+    print("Hello")
+    attendees = AllAtendees.objects.filter(created_on__date=date.today())
+    first_atendee=AllAtendees.objects.last()
+ 
+  
+
+
+ 
+    return render(request,'profile/attendance.html')
+
+
+def attendees_list(request):
+    # attendee = AllAtendees.objects.filter(user = request.user,checked_in_on__date = date.today())
+    # print("nananana", attendee.count())
+    # if attendee.count() == 0:
+    #     AllAtendees.objects.create(user=request.user, first_name=request.user.first_name, last_name = request.user.last_name)
+  
+    queryset = AllAtendees.objects.filter(checked_in_on__date=date.today())
+    table = AttendeesTable(queryset)
+    print("nayhe",queryset.count())
+    return render(request, 'ongeo/attend_list.html', {'table': table})
+
+
 
 
