@@ -77,3 +77,35 @@ class UserAttendanceForm(forms.ModelForm):
 
 
 
+
+CommunityChoices = [
+   
+       ('Moringa','Moringa'),
+        ('Safaricom','Safaricom'),
+        ('Airtel','Airtel'),
+         ('Daystar','Daystar'),
+
+
+]
+
+
+class SwitchCommunityForm(forms.ModelForm):
+    community= forms.CharField(label='Which Community are switching to?', widget=forms.RadioSelect(choices=CommunityChoices))
+
+    class Meta:
+        model = Profile
+
+        fields = ['community']
+
+
+
+    def save(self, commit=True):
+        profile =super(SwitchCommunityForm, self).save(commit=False)
+        profile.community = self.cleaned_data['community']
+
+
+        if commit:
+            profile.save()
+
+
+        return profile.community
