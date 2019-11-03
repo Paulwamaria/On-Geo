@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.core import serializers
+from django.core.paginator import Paginator
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -8,7 +9,7 @@ from django.contrib import messages
 from django.views.generic import CreateView,UpdateView,DeleteView
 from geopy.distance import distance as geopy_distance
 from datetime import date
-from .forms import OnGeoRegistrationForm,UserUpdateForm,ProfileUpdateForm, UserAttendanceForm
+from .forms import OnGeoRegistrationForm,UserUpdateForm,ProfileUpdateForm, UserAttendanceForm, SwitchCommunityForm
 from .models import Profile, Organisation, Post,Attendance,Notification, AllLogin, AllAtendees
 from .tables import AttendeesTable
 
@@ -197,7 +198,7 @@ class NotificationCreateView(LoginRequiredMixin,CreateView):
 
     def form_valid(self,form):
         form.instance.user = self.request.user
-        form.instance.organisation = Organisation.objects.get(organisation_name = self.request.user.profile.organisation)
+        form.instance.organisation = Organisation.objects.get(organisation_name = self.request.user.profile.community)
         return super().form_valid(form)
 
 
@@ -258,7 +259,17 @@ def post(request):
     profile=Profile.objects.get(user=request.user)
     posts = Post.objects.filter(organisation__organisation_name=profile.community)
     notifications = Notification.objects.filter(organisation__organisation_name=profile.community)
-    
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(posts, 2)
+
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
 
     
     
@@ -302,3 +313,22 @@ def attendees_list(request):
 
 
 
+def switch_community(request):
+    if request.method == 'POST':
+        c_form = SwitchCommunityForm(request.POST,instance = request.user.profile)
+        
+          
+        if c_form.is_valid():
+            c_form.save()
+         
+    else:
+        c_form = SwitchCommunityForm(instance = request.user.profile)
+        
+      
+
+
+    context={
+        'c_form':c_form,
+      
+    }
+    return render(request, 'ongeo/switch_community.html',context)
