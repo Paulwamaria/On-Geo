@@ -2,7 +2,7 @@ $(document).ready(function () {
     navigator.geolocation.getCurrentPosition(onPositionUpdate);
 });
 
-// function getLoc(){
+// function getLoc(){om
 //     navigator.geolocation.getCurrentPosition(onPositionUpdate);
 // }
 
@@ -29,9 +29,7 @@ function onPositionUpdate(position) {
                 nams = $("#lname").val(data.last_name)
 
             if (data.distance < 30) {
-                $("#fname").val(data.user_data.first_name)
-                $("#lname").val(data.user_data.last_name)
-                
+         
                 $(".card-b").show()
                 $("ol#inattendance").prepend("<li>"+ data.user_data.first_name + " " + data.user_data.last_name + "</li>");
                 $.ajax({
