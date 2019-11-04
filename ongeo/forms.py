@@ -90,7 +90,7 @@ CommunityChoices = [
 
 
 class SwitchCommunityForm(forms.ModelForm):
-    community= forms.CharField(label='Which Community are switching to?', widget=forms.RadioSelect(choices=CommunityChoices))
+    community= forms.CharField(label='Which Community are you switching to?', widget=forms.RadioSelect(choices=CommunityChoices))
 
     class Meta:
         model = Profile
@@ -100,7 +100,7 @@ class SwitchCommunityForm(forms.ModelForm):
 
 
     def save(self, commit=True):
-        profile =super(SwitchCommunityForm, self).save(commit=False)
+        profile = super(SwitchCommunityForm, self).save(commit=False)
         profile.community = self.cleaned_data['community']
 
 
