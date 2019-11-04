@@ -143,8 +143,8 @@ def get_distance(request):
         user_position = (user_latitude, user_longitude)
 
         # fixed_position = (41.8781, 87.6298)
-        fixed_position = (-1.3034531999999999, 36.7927116)
-        #fixed_position = (-1.271398, 36.835328)
+        #fixed_position = (-1.3034531999999999, 36.7927116)
+        fixed_position = (-1.271398, 36.835328)
 
 
         distance = geopy_distance(user_position, fixed_position)
@@ -315,14 +315,22 @@ def attendees_list(request):
 
 def switch_community(request):
     if request.method == 'POST':
-        c_form = SwitchCommunityForm(request.POST,instance = request.user.profile)
-        
-          
-        if c_form.is_valid():
-            c_form.save()
+        community = Organisation.objects.filter(organisation_name__icontains =request.POST.get('community').lower()).first()
+        if community == None:
+            new_community = Organisation(organisation_name = request.POST.get('community') )
+            new_community.save()
+            community = new_community
+        profile = request.user.profile
+        profile.community =  community
+        profile.save()
+        print("******************************************************",community)
+        # c_form = SwitchCommunityForm(request.POST)
+        # if c_form.is_valid():
+           
+            # c_form.save()
          
-    else:
-        c_form = SwitchCommunityForm(instance = request.user.profile)
+    # else:
+    c_form = SwitchCommunityForm(instance = request.user.profile)
         
       
 

@@ -6,9 +6,9 @@ from django.contrib.auth.models import User
 
 class Organisation(models.Model):
     organisation_name = models.CharField(max_length=60)
-    location= models.PointField()
+    location= models.PointField(null=True)
     logo = models.ImageField(upload_to='media/', blank = True, null =True)
-    members = models.PositiveIntegerField()
+    members = models.PositiveIntegerField(null = True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
