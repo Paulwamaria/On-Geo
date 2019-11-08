@@ -143,8 +143,8 @@ def get_distance(request):
         user_position = (user_latitude, user_longitude)
 
         # fixed_position = (41.8781, 87.6298)
-        #fixed_position = (-1.3034531999999999, 36.7927116)
-        fixed_position = (-1.271398, 36.835328)
+        fixed_position = (-1.3034531999999999, 36.7927116)
+        #fixed_position = (-1.271398, 36.835328)
 
 
         distance = geopy_distance(user_position, fixed_position)
