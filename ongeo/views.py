@@ -108,6 +108,7 @@ def save_to_db(request):
         print("****************",org)
         first_name = request.GET.get('first_name')
         last_name = request.GET.get('last_name')
+     
         initial_count= AllAtendees.objects.all().count()
        
         # attendant = Attendance.objects.filter(first_name=first_name, last_name=last_name).first()
