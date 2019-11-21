@@ -167,4 +167,57 @@ LOGIN_URL = 'login'
 
 
 django_heroku.settings(locals())
+# If we aren't building in /app, then fix the environment variables which assumed we were
+BUILD_DIR = os.environ.get("BUILD_DIR", "/app")
+if BUILD_DIR != "/app":
+    lib_re = re.compile(r'(?:^|(?<=:))/app(?=/)', re.ASCII | re.MULTILINE)
+    lib_vars = set(["LIBRARY_PATH","LD_LIBRARY_PATH","GEOS_LIBRARY_PATH","GDAL_LIBRARY_PATH","PROJ4_LIBRARY_PATH","GDAL_DATA","GDAL"])
+    for lib_var in lib_vars:
+        if lib_var in os.environ and os.environ.get(lib_var, None):
+            os.environ[lib_var] = lib_re.sub(BUILD_DIR, os.environ.get(lib_var))
+
+# Glob for archive lib name within path provided or else LD_LIBRARY_PATH
+def lib_find_archive(lib_paths, lib_name):
+    import subprocess, glob
+
+    if lib_paths is not None:
+        if not lib_paths or os.path.isfile(lib_paths):
+            # Quit if path is empty or points to an actual file
+            return lib_paths or None
+
+        elif not os.path.isdir(lib_paths):
+            # Separate archive path from name
+            lib_name = os.path.basename(lib_paths) or lib_name
+            lib_paths = os.path.dirname(lib_paths) or None
+
+    # lib_name must be populated
+    if not lib_name: return None
+
+    # Glob search within lib_path or else LD_LIBRARY_PATH
+    if lib_paths:
+        lib_paths = [lib_paths]
+    elif(os.environ.get("LD_LIBRARY_PATH", None)):
+        lib_paths = os.environ.get("LD_LIBRARY_PATH", None).split(':')
+    else:
+        return None
+
+    # Glob-seach each directory for lib_name
+    for lib_path in lib_paths:
+        if not (lib_path and os.path.isdir(lib_path)):
+            continue
+
+        # Find matching archive files
+        lib_path_glob = os.path.join(lib_path, lib_name)
+        lib_paths_globbed = glob.glob(lib_path_glob)
+
+        # Use shortest-length match
+        if lib_paths_globbed: return sorted(lib_paths_globbed, key=len)[0]
+
+    # Archive not found
+    return None
+
+# Collect library paths and correct each, if necessary
+GDAL_LIBRARY_PATH = lib_find_archive( os.environ.get('GDAL_LIBRARY_PATH', None), 'libgdal.so*' )
+GEOS_LIBRARY_PATH = lib_find_archive( os.environ.get('GEOS_LIBRARY_PATH', None), 'libgeos_c.so*' )
+PROJ4_LIBRARY_PATH = lib_find_archive( os.environ.get('PROJ4_LIBRARY_PATH', None), 'libproj.so*' )
 
