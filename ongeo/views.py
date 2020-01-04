@@ -144,8 +144,8 @@ def get_distance(request):
         user_position = (user_latitude, user_longitude)
 
         # fixed_position = (41.8781, 87.6298)
-        fixed_position = (-1.3034531999999999, 36.7927116)
-        #fixed_position = (-1.271398, 36.835328)
+        #fixed_position = (-1.3034531999999999, 36.7927116)
+        fixed_position = (-1.286963, 36.835328)
 
 
         distance = geopy_distance(user_position, fixed_position)
@@ -286,12 +286,14 @@ def post(request):
 
 
 def attend(request):
-    attendee = AllAtendees.objects.filter(user = request.user,created_on__date=date.today())
+    attendee = AllAtendees.objects.filter(user = request.user,checked_in_on=date.today())
+    print("hurray!", request.user.last_login)
     if attendee == None:
-        AllAtendees.objects.create(user=request.user, f_name=request.user.first_name, l_name = request.user.last_name)
+        AllAtendees.objects.create(user=request.user, f_name=request.user.first_name, l_name = request.user.last_name, last_seen = request.user.last_login)
     print("Hello")
-    attendees = AllAtendees.objects.filter(created_on__date=date.today())
+    attendees = AllAtendees.objects.filter(checked_in_on=date.today())
     first_atendee=AllAtendees.objects.last()
+    print('yep')
  
   
 
@@ -308,6 +310,8 @@ def attendees_list(request):
   
     queryset = AllAtendees.objects.filter(checked_in_on__date=date.today())
     table = AttendeesTable(queryset)
+    atn1 = queryset.first()
+    print(atn1.last_seen)
     print("nayhe",queryset.count())
     return render(request, 'ongeo/attend_list.html', {'table': table})
 
@@ -324,6 +328,8 @@ def switch_community(request):
         profile = request.user.profile
         profile.community =  community
         profile.save()
+
+        return redirect()
         print("******************************************************",community)
         # c_form = SwitchCommunityForm(request.POST)
         # if c_form.is_valid():
