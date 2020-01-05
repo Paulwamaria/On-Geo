@@ -3,11 +3,44 @@
 
 
 {% block content %}
-<div class="container bg-white">
-    <h2 class="text-info text-center">In attendance today:</h2>
-    <div class="">
+<div class="container bg-info">
+    <h2 class="text-white text-center">In attendance today:</h2>
+    <!-- <div class="">
             {% render_table table %}
-    </div>
+    </div> -->
+    <div class="table-responsive text-nowrap">
+
+        <table id="dtBasicExample" class="table table-striped">
+          <thead>
+            <tr class="primary-color-dark text-white">
+                <th scope="col">Username</th>
+                <th scope="col">Date</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Last Login</th>
+            </tr>
+          </thead>
+          <tbody>
+              {% for item in queryset %}
+
+            <tr>
+              <!-- <th scope="row">1</th> -->
+              <td>{{item.user}}</td>
+                  <td>{{item.checked_in_on}}</td>
+                  <td>{{item.first_name}}</td>
+                  <td>{{item.last_name}}</td>
+                  {% if request.user.is_authenticated and item.user == request.user %}
+                  <td class="text-primary">online</td>
+                  {% else %}
+                  <td>{{item.last_seen}}</td>
+                  {% endif %}
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+
+      </div>
  
 </div>
 
