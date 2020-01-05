@@ -124,3 +124,12 @@ class AllAtendees(models.Model):
 
     def __str__(self):
         return str(self.user) 
+
+class CheckPoint(models.Model):
+    point = models.PointField()
+    name = models.CharField(max_length=60)
+    is_active = models.BooleanField(default = False)
+
+
+    def __str__(self):
+        return self.name
