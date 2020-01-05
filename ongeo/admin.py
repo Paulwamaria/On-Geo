@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.gis.admin import OSMGeoAdmin
-from.models import Profile, Organisation,Post,Attendance,AllLogin,AllAtendees
+from.models import Profile, Organisation,Post,Attendance,AllLogin,AllAtendees,CheckPoint
 
 # Register your models here.
 @admin.register(Organisation)
@@ -17,6 +17,9 @@ class PostAdmin(OSMGeoAdmin):
     list_display = ('title', 'content')
 
 
+@admin.register(CheckPoint)
+class CheckPointAdmin(OSMGeoAdmin):
+    list_display = ('point', 'name')
 
   
 @admin.register(Attendance)
