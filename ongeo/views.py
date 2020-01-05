@@ -10,7 +10,7 @@ from django.views.generic import CreateView,UpdateView,DeleteView
 from geopy.distance import distance as geopy_distance
 from datetime import date
 from .forms import OnGeoRegistrationForm,UserUpdateForm,ProfileUpdateForm, UserAttendanceForm, SwitchCommunityForm
-from .models import Profile, Organisation, Post,Attendance,Notification, AllLogin, AllAtendees
+from .models import Profile, Organisation, Post,Attendance,Notification, AllLogin, AllAtendees,CheckPoint
 from .tables import AttendeesTable
 
 def index(request):
@@ -203,6 +203,16 @@ class NotificationCreateView(LoginRequiredMixin,CreateView):
         return super().form_valid(form)
 
 
+class PointCreateView(LoginRequiredMixin,CreateView):
+     
+    model = CheckPoint
+    success_url = ('/')
+    fields = ['point','name']
+
+    def form_valid(self,form):
+        return super().form_valid(form)
+
+
 class PostCreateView(LoginRequiredMixin,CreateView):
      
     model = Post
@@ -310,10 +320,14 @@ def attendees_list(request):
   
     queryset = AllAtendees.objects.filter(checked_in_on__date=date.today())
     table = AttendeesTable(queryset)
+    context = {
+        "queryset": queryset,
+        "table":table
+    }
     atn1 = queryset.first()
     print(atn1.last_seen)
     print("nayhe",queryset.count())
-    return render(request, 'ongeo/attend_list.html', {'table': table})
+    return render(request, 'ongeo/attend_list.html', context)
 
 
 
