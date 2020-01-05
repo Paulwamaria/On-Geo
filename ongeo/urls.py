@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static  import static
-from .views import PostCreateView,NotificationCreateView,PostUpdateView,PostDeleteView
+from .views import PostCreateView,NotificationCreateView,PostUpdateView,PostDeleteView,PointCreateView
 from . import views
 
 
@@ -27,6 +27,7 @@ urlpatterns=[
     path('post/<int:pk>/update/',PostUpdateView.as_view(), name = 'post-update'),
     path('post/<int:pk>/delete/',PostDeleteView.as_view(), name = 'post-delete'),
     path('community/change/',views.switch_community, name = 'switch-community'),
+    path('point/new/',PointCreateView.as_view(), name = 'point-create'),
 ]
 
 if settings.DEBUG:
