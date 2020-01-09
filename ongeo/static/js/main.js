@@ -28,7 +28,8 @@ function onPositionUpdate(position) {
         .done(function (data) {
                 nams = $("#lname").val(data.last_name)
 
-            if (data.distance < 30) {
+            if (data.distance <= 50) {
+                console.log(data.distance)
          
                 $(".card-b").show()
                 $("ol#inattendance").prepend("<li>"+ data.user_data.first_name + " " + data.user_data.last_name + "</li>");
@@ -54,7 +55,7 @@ function onPositionUpdate(position) {
                         window.location.replace('/')
                     }
                 })
-            } else if (data.distance > 30) {
+            } else if (data.distance > 50) {
                 document.getElementById("outb").innerHTML = "We are sorry the system can\'t check you in, you are not Within Moringa"
   
                
