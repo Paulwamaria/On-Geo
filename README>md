@@ -1,0 +1,61 @@
+# On-Geo Manager
+
+## Description
+
+A web application that connects people in an organisation and restricts access to some of the information or resources based on their geographical location
+
+## Developer
+
+Paul Kamau Wamaria
+
+
+
+## User stories
+
+### BDD
+
+* The user is able to sign up
+* The application automatically gets the user location and compares it to a pre-determined fixed location
+* If the user is within a radius of 30 meters, the application automatically signs them into the attendance sheet.
+* Hovever, if the user is out of range, they get an error message indicating that they are way out of range to be checked in.
+* The admin is able to filter which information is vissible to those within the range.
+
+
+
+
+## Technology
+
+* python3.6 as the primary language
+* Django as the python framework
+* HTML for content
+* CSS and Bootstrap3 for styling
+* Javascript 
+
+
+
+## specs
+
+
+
+
+## Installation 
+
+* Create a virtual environmet
+* Clone the repo from this link 
+* Install python3.6
+* Install the dependencies using this command: ** pip install -r requirements.txt
+* Run the server using the command: ** python manage.py runserver
+
+ 
+
+
+## Contacts
+
+* Primary Email: paulwamaria@gmail.com
+* Secondary Email: helloemryon@gmail.com
+* Phone: 0780404626
+
+## copyright
+MIT License
+
+[Copyright (c) 2019 Paulwamaria](LICENSE)
