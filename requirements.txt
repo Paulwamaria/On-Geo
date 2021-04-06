@@ -8,7 +8,7 @@ Django==2.2.8
 django-crispy-forms==1.8.0
 django-heroku==0.3.1
 django-last-seen==0.3
-django-registration==2.4.1
+django-registration==3.1.2
 django-tables2==2.1.1
 django-tables2-bootstrap4==2.0.0b5
 Flask==1.1.1
