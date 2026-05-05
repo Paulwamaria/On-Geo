@@ -91,6 +91,109 @@ font-size:30px;
     padding-top: calc(25vh - 2vh);
 }
 
+.home-shell {
+    align-items: center;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+    min-height: calc(100vh - 78px);
+    max-width: 1120px;
+    padding: 48px 18px 72px;
+}
+
+.home-hero {
+    background: rgba(9, 22, 30, 0.74);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    box-shadow: 0 22px 56px rgba(0, 0, 0, 0.34);
+    max-width: 880px;
+    padding: 44px 36px;
+    text-align: center;
+}
+
+.home-hero .welcam {
+    color: #ffffff;
+    font-size: 72px;
+    line-height: 1.05;
+    margin: 0;
+    padding-top: 0;
+}
+
+.home-copy {
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 20px;
+    line-height: 1.6;
+    margin: 18px auto 0;
+    max-width: 680px;
+}
+
+.home-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 28px;
+}
+
+.home-primary-action,
+.home-secondary-action {
+    align-items: center;
+    border-radius: 6px;
+    display: inline-flex;
+    gap: 8px;
+    justify-content: center;
+    min-width: 140px;
+    padding: 11px 17px;
+}
+
+.home-primary-action {
+    background: #f2c14e;
+    color: #10252f;
+}
+
+.home-primary-action:hover {
+    background: #ffd467;
+    color: #10252f;
+}
+
+.home-secondary-action {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(242, 193, 78, 0.34);
+    color: #f2c14e;
+}
+
+.home-secondary-action:hover {
+    background: rgba(242, 193, 78, 0.16);
+    color: #ffffff;
+}
+
+.home-feature-strip {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 18px;
+    max-width: 880px;
+    width: 100%;
+}
+
+.home-feature {
+    align-items: center;
+    background: rgba(9, 22, 30, 0.68);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.82);
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 14px;
+}
+
+.home-feature i {
+    color: #f2c14e;
+}
+
 .ongeo-navbar {
     background: rgba(9, 22, 30, 0.92);
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
@@ -335,6 +438,29 @@ font-size:30px;
 
     .ongeo-dropdown {
         margin-top: 6px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .home-shell {
+        min-height: auto;
+        padding-top: 34px;
+    }
+
+    .home-hero {
+        padding: 34px 20px;
+    }
+
+    .home-hero .welcam {
+        font-size: 44px;
+    }
+
+    .home-copy {
+        font-size: 17px;
+    }
+
+    .home-feature-strip {
+        grid-template-columns: 1fr;
     }
 }
 

@@ -2,11 +2,48 @@
 
 
 {% block content %}
-<div class="container-fluid overlay">
+<section class="home-shell">
+    <div class="home-hero">
+        <p class="section-kicker nvs">Geo-aware attendance</p>
+        <h1 class="welcam">{{ message }}</h1>
+        <p class="home-copy">A location-aware workspace for managing community updates, notices, and attendance check-ins.</p>
 
-    <h2 class="text-center text-info welcam">{{message}}</h2>
-    <h4  class="text-center text-info">An online platform for mornitoring the students attendance</h4>
-</div>
+        <div class="home-actions">
+            {% if user.is_authenticated %}
+            <a class="btn home-primary-action nvs" href="{% url 'posts' %}">
+                <i class="fas fa-layer-group"></i>
+                View posts
+            </a>
+            <a class="btn home-secondary-action nvs" href="{% url 'attendance' %}">
+                <i class="fas fa-location-arrow"></i>
+                Check in
+            </a>
+            {% else %}
+            <a class="btn home-primary-action nvs" href="{% url 'register' %}">
+                <i class="fas fa-user-plus"></i>
+                Register
+            </a>
+            <a class="btn home-secondary-action nvs" href="{% url 'login' %}">
+                <i class="fas fa-sign-in-alt"></i>
+                Log in
+            </a>
+            {% endif %}
+        </div>
+    </div>
 
-
+    <div class="home-feature-strip">
+        <div class="home-feature">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Location checks</span>
+        </div>
+        <div class="home-feature">
+            <i class="fas fa-clipboard-check"></i>
+            <span>Daily attendance</span>
+        </div>
+        <div class="home-feature">
+            <i class="fas fa-bullhorn"></i>
+            <span>Community notices</span>
+        </div>
+    </div>
+</section>
 {% endblock %}
