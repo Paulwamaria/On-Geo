@@ -39,14 +39,9 @@ def register(request):
         form = OnGeoRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            email = form.cleaned_data['email']
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
             username = form.cleaned_data.get('username')
-            password1 = form.cleaned_data['password1']
-            password2 = form.cleaned_data['password2']
             messages.success(request, f'Account created for {username}')
-            return redirect('profile')
+            return redirect('login')
     else:
         form = OnGeoRegistrationForm()
     return render(request, 'profile/register.html', {'form': form})
@@ -59,18 +54,16 @@ def attendance(request):
         
             
         if attnd_form.is_valid():
-            attnd_form.save()
-            first_name = attnd_form.cleaned_data['first_name']
-            last_name = attnd_form.cleaned_data['last_name']
-
-            # my_attendant ={
-            #     "first_name":first_name,
-            #     "last_name":last_name,
-            # }
+            if request.user.profile.community is None:
+                messages.error(request, "Select a community before recording attendance.")
+                return redirect('switch-community')
+            attendance_record = attnd_form.save(commit=False)
+            attendance_record.organisation = request.user.profile.community
+            attendance_record.save()
+            messages.success(request, "Attendance recorded.")
 
             context={
             'attnd_form':attnd_form,
-            # "attendant":my_attendant,
         
         }
         return render(request, 'profile/attendance.html',context)
@@ -89,6 +82,7 @@ def attendance(request):
     return render(request, 'profile/attendance.html',context)
 
 
+@login_required
 def display_profile(request,username):
     profile = Profile.objects.get(user__username= username)
 
@@ -101,11 +95,9 @@ def display_profile(request,username):
     return render(request,'profile/profile_detail.html',context)
 
 
+@login_required
 def save_to_db(request):
     if request.method == "GET":
-        org = request.user.profile.community
-        distance = request.GET.get('distance')
-        print("****************",org)
         first_name = request.GET.get('first_name')
         last_name = request.GET.get('last_name')
      
@@ -119,7 +111,6 @@ def save_to_db(request):
 
 
         attendee = AllAtendees.objects.filter(user = request.user,checked_in_on__date = date.today())
-        print("nananana", attendee.count())
         if attendee.count() == 0:
             AllAtendees.objects.create(user=request.user, first_name=first_name, last_name =last_name)
     
@@ -141,11 +132,17 @@ def get_distance(request):
         user_latitude = request.GET.get('user_latitude')
         user_longitude = request.GET.get('user_longitude')
 
+        if not user_latitude or not user_longitude:
+            return JsonResponse({'error': 'Missing user coordinates'}, status=400)
+
         user_position = (user_latitude, user_longitude)
 
-        # fixed_position = (41.8781, 87.6298)
-        fixed_position = (-1.3034531999999999, 36.7927116)
-        #fixed_position = (-1.2828671999999999, 36.831232)
+        checkpoint = CheckPoint.objects.filter(is_active=True).first()
+        fixed_position = (
+            (checkpoint.point.y, checkpoint.point.x)
+            if checkpoint
+            else (-1.3034531999999999, 36.7927116)
+        )
 
 
         distance = geopy_distance(user_position, fixed_position)
@@ -160,9 +157,6 @@ def get_distance(request):
             "user":serialized_user,
             "user_data":my_user
         }
-        print(dist)
-      
-
         return JsonResponse(context,safe=False)
 
 
@@ -172,12 +166,11 @@ def profile(request):
         u_form = UserUpdateForm(request.POST,instance = request.user)
         
         p_form = ProfileUpdateForm(request.POST,request.FILES,instance = request.user.profile)    
-        if u_form.is_valid and p_form.is_valid():
+        if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             profile = p_form.save()
-            profile.profile_pic = p_form.cleaned_data['profile_pic']
-            profile.save()
-        return redirect("home")
+            messages.success(request, "Profile updated.")
+            return redirect("home")
     else:
         u_form = UserUpdateForm(instance = request.user)
         
@@ -199,7 +192,9 @@ class NotificationCreateView(LoginRequiredMixin,CreateView):
 
     def form_valid(self,form):
         form.instance.user = self.request.user
-        form.instance.organisation = Organisation.objects.get(organisation_name = self.request.user.profile.community)
+        if self.request.user.profile.community is None:
+            return redirect('switch-community')
+        form.instance.organisation = self.request.user.profile.community
         return super().form_valid(form)
 
 
@@ -221,7 +216,9 @@ class PostCreateView(LoginRequiredMixin,CreateView):
 
     def form_valid(self,form):
         form.instance.user = self.request.user
-        form.instance.organisation = Organisation.objects.get(organisation_name = self.request.user.profile.community)
+        if self.request.user.profile.community is None:
+            return redirect('switch-community')
+        form.instance.organisation = self.request.user.profile.community
         return super().form_valid(form)
 
 
@@ -268,8 +265,12 @@ class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
 def post(request):
   
     profile=Profile.objects.get(user=request.user)
-    posts = Post.objects.filter(organisation__organisation_name=profile.community)
-    notifications = Notification.objects.filter(organisation__organisation_name=profile.community)
+    if profile.community is None:
+        messages.info(request, "Select a community before viewing posts.")
+        return redirect('switch-community')
+
+    posts = Post.objects.filter(organisation=profile.community)
+    notifications = Notification.objects.filter(organisation=profile.community)
 
     page = request.GET.get('page', 1)
     paginator = Paginator(posts, 2)
@@ -295,21 +296,20 @@ def post(request):
 
 
 
+@login_required
 def attend(request):
-    attendee = AllAtendees.objects.filter(user = request.user,checked_in_on=date.today())
-    if attendee == None:
-        AllAtendees.objects.create(user=request.user, f_name=request.user.first_name, l_name = request.user.last_name, last_seen = request.user.last_login)
-    attendees = AllAtendees.objects.filter(checked_in_on=date.today())
-    first_atendee=AllAtendees.objects.last()
-
- 
-  
-
-
- 
+    AllAtendees.objects.get_or_create(
+        user=request.user,
+        checked_in_on__date=date.today(),
+        defaults={
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+        },
+    )
     return render(request,'profile/attendance.html')
 
 
+@login_required
 def attendees_list(request):
     # attendee = AllAtendees.objects.filter(user = request.user,checked_in_on__date = date.today())
     # print("nananana", attendee.count())
@@ -327,22 +327,22 @@ def attendees_list(request):
 
 
 
+@login_required
 def switch_community(request):
     if request.method == 'POST':
-        community = Organisation.objects.filter(organisation_name__icontains =request.POST.get('community').lower()).first()
-        if community == None:
-            new_community = Organisation(organisation_name = request.POST.get('community') )
-            new_community.save()
-            community = new_community
+        community_name = request.POST.get('community')
+        if not community_name:
+            messages.error(request, "Select a community.")
+            return redirect('switch-community')
+        community = Organisation.objects.filter(organisation_name__iexact=community_name).first()
+        if community is None:
+            community = Organisation.objects.create(organisation_name=community_name)
         profile = request.user.profile
-        profile.community =  community
+        profile.community = community
         profile.save()
 
-        return redirect()
-        # c_form = SwitchCommunityForm(request.POST)
-        # if c_form.is_valid():
-           
-            # c_form.save()
+        messages.success(request, f"Active community switched to {community.organisation_name}.")
+        return redirect('posts')
          
     # else:
     c_form = SwitchCommunityForm(instance = request.user.profile)

@@ -27,7 +27,7 @@ class Organisation(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(upload_to='media/profile_pics', default='media/default.jpg')
-    bio = models.TextField()
+    bio = models.TextField(blank=True, default='')
     community = models.ForeignKey(Organisation, related_name='profiles', on_delete=models.CASCADE, blank=True, null=True)
  
    

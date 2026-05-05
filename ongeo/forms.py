@@ -34,11 +34,9 @@ class OnGeoRegistrationForm(UserCreationForm):
     def save(self, commit=True):
         user =super(OnGeoRegistrationForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
-        user.last_name = self.cleaned_data['first_name']
-        user.first_name = self.cleaned_data['last_name']
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
         user.username = self.cleaned_data['username']
-        user.password1 = self.cleaned_data['password1']
-        user.password2 = self.cleaned_data['password2']
 
         if commit:
             user.save()
@@ -90,7 +88,7 @@ CommunityChoices = [
 
 
 class SwitchCommunityForm(forms.ModelForm):
-    community= forms.CharField(label='Which Community are you switching to?', widget=forms.RadioSelect(choices=CommunityChoices))
+    community = forms.ChoiceField(label='Which Community are you switching to?', widget=forms.RadioSelect, choices=CommunityChoices)
 
     class Meta:
         model = Profile
@@ -101,11 +99,12 @@ class SwitchCommunityForm(forms.ModelForm):
 
     def save(self, commit=True):
         profile = super(SwitchCommunityForm, self).save(commit=False)
-        profile.community = self.cleaned_data['community']
+        community, _ = Organisation.objects.get_or_create(organisation_name=self.cleaned_data['community'])
+        profile.community = community
 
 
         if commit:
             profile.save()
 
 
-        return profile.community
+        return profile
