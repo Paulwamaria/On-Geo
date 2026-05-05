@@ -1,99 +1,66 @@
 {% extends 'ongeo/base.html' %}
 
-
 {% block content %}
+{% if profile %}
+<section class="profile-shell profile-detail-shell">
+    <div class="profile-detail-grid">
+        <aside class="profile-panel profile-summary-card">
+            {% if user.profile == profile %}
+            <a class="btn profile-edit-link nvs" href="{% url 'profile' %}">
+                <i class="fas fa-pen"></i>
+                Edit profile
+            </a>
+            {% endif %}
 
+            <img class="profile-avatar profile-avatar-large" src="{{ profile.profile_pic.url }}" id="prof-pic"
+                alt="{{ profile.user.username }} profile picture">
 
-<div class="content-section">
-    <div class="media">
-        {% if profile %}
+            <p class="section-kicker nvs">Member profile</p>
+            <h1 class="ong profile-title">{{ profile.user.username }}</h1>
 
-        <div class="container-fluid">
-
-            <div class="row">
-
-                <div class="col-md-6">
-                    <div class="card bg-info mt-5">
-                        <div class="card-header">
-                            {% if user.profile == profile %}
-                            <a class="text-primary bg-white" href="{% url 'profile' %}">Edit Profile</a>
-                            {% endif %}
-                            <h4 class="text-center text-white ong">{{profile.user.username}} Profile</h4>
-
-                            <img class="full-profile prof-img img-responsive" src="{{profile.profile_pic.url}}" id="prof-pic">
-
-
-                        </div>
-
-                        <div class="card-body">
-
-
-                            <P class="text-white">Bio: {{profile.bio}}</P>
-
-                            <P class="text-white">Community: {{profile.community}}</P>
-
-                        </div>
-                        <div class="card-footer">
-
-                            <p class="text-white">Email: {{profile.user.email}}</p>
-                        </div>
-                    </div>
+            <dl class="profile-meta-list">
+                <div>
+                    <dt>Bio</dt>
+                    <dd>{{ profile.bio|default:"No bio added yet." }}</dd>
                 </div>
-
-
-
-                <div class="col-md-6">
-                    <h2 class="text-center text-white mt-4 ong">Posts by {{profile.user.username}}</h2>
-                    <div class="row">
-
-
-                        {% for post in user_posts %}
-
-                        <div class="col-md-6">
-                            <div class=" card ">
-
-                                <div class="card-body">
-                                    <h6 class="text-center text-info">{{post.title}}</h6>
-                                    {% if post.image %}
-                                    <img src="{{post.image.url}}" class="img-responsive prof-imgs" id='' alt=" ">
-                                    {% endif %}
-
-                                    <p class="text-dark image-descrips" id="image-descrip">
-                                        {{post.content |slice:":50"}}...</p>
-
-                                </div>
-
-                                <div class="card-footer">
-
-
-
-
-                                </div>
-
-
-
-
-                            </div>
-
-
-                        </div>
-
-                        {% endfor %}
-                    </div>
-
+                <div>
+                    <dt>Community</dt>
+                    <dd>{{ profile.community|default:"No community selected" }}</dd>
                 </div>
+                <div>
+                    <dt>Email</dt>
+                    <dd>{{ profile.user.email }}</dd>
+                </div>
+            </dl>
+        </aside>
 
-
+        <section class="profile-posts-section">
+            <div class="profile-posts-header">
+                <p class="section-kicker nvs">Activity</p>
+                <h2 class="ong">Posts by {{ profile.user.username }}</h2>
             </div>
 
-        </div>
+            <div class="profile-post-grid">
+                {% for post in user_posts %}
+                <article class="profile-post-card">
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" class="profile-post-image" alt="{{ post.title }}">
+                    {% endif %}
 
-
-
-
-        {% endif %}
+                    <div class="profile-post-body">
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.content|slice:":90" }}{% if post.content|length > 90 %}...{% endif %}</p>
+                    </div>
+                </article>
+                {% empty %}
+                <div class="profile-empty-posts">
+                    <i class="fas fa-layer-group"></i>
+                    <p>No posts yet.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
     </div>
-</div>
-
-
+</section>
+{% endif %}
 {% endblock %}

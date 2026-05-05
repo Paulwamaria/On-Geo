@@ -602,6 +602,109 @@ display:none;
     color: rgba(255, 255, 255, 0.32);
 }
 
+.profile-shell {
+    color: #ffffff;
+    margin: 0 auto;
+    max-width: 1120px;
+    padding: 56px 18px 72px;
+}
+
+.profile-panel {
+    background: rgba(9, 22, 30, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    box-shadow: 0 22px 56px rgba(0, 0, 0, 0.34);
+    padding: 34px;
+}
+
+.profile-header {
+    align-items: center;
+    display: flex;
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.profile-avatar {
+    border: 2px solid rgba(242, 193, 78, 0.76);
+    border-radius: 50%;
+    height: 78px;
+    object-fit: cover;
+    width: 78px;
+}
+
+.profile-title {
+    color: #ffffff;
+    font-size: 46px;
+    line-height: 1.05;
+    margin: 0;
+}
+
+.profile-subtitle {
+    color: rgba(255, 255, 255, 0.72);
+    margin: 10px 0 0;
+}
+
+.profile-form fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-form legend {
+    color: #f2c14e;
+    font-size: 18px;
+    margin-bottom: 18px;
+}
+
+.profile-form label {
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.profile-form .form-control,
+.profile-form select,
+.profile-form textarea {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 6px;
+    color: #ffffff;
+}
+
+.profile-form .form-control:focus,
+.profile-form select:focus,
+.profile-form textarea:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(242, 193, 78, 0.72);
+    box-shadow: 0 0 0 0.2rem rgba(242, 193, 78, 0.14);
+    color: #ffffff;
+}
+
+.profile-form .text-muted,
+.profile-form .help-block {
+    color: rgba(255, 255, 255, 0.62) !important;
+}
+
+.profile-form option {
+    color: #10252f;
+}
+
+.profile-submit {
+    align-items: center;
+    background: #f2c14e;
+    border-radius: 6px;
+    color: #10252f;
+    display: inline-flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+    padding: 11px 17px;
+    width: 100%;
+}
+
+.profile-submit:hover {
+    background: #ffd467;
+    color: #10252f;
+}
+
 @media (max-width: 991.98px) {
     .posts-header {
         align-items: flex-start;
@@ -616,5 +719,18 @@ display:none;
     .notice-panel {
         margin-top: 18px;
         position: static;
+    }
+
+    .profile-panel {
+        padding: 26px 18px;
+    }
+
+    .profile-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .profile-title {
+        font-size: 36px;
     }
 }
