@@ -1,11 +1,22 @@
 from django.contrib import admin
 from django.contrib.gis.admin import OSMGeoAdmin
-from.models import Profile, Organisation,Post,Attendance,AllLogin,AllAtendees,CheckPoint
+from .models import Profile, Organisation, Post, Attendance, AllLogin, AllAtendees, CheckPoint
 
 # Register your models here.
 @admin.register(Organisation)
 class OrganisationAdmin(OSMGeoAdmin):
-    list_display = ('organisation_name', 'location')
+    fields = ('organisation_name', 'description', 'location', 'logo', 'members')
+    list_display = ('organisation_name', 'short_description', 'location')
+    search_fields = ('organisation_name', 'description')
+
+    @admin.display(description='Description')
+    def short_description(self, obj):
+        if len(obj.description) > 80:
+            return f'{obj.description[:77]}...'
+        return obj.description
+
+    class Media:
+        js = ('js/admin_current_location.js',)
 
 
 @admin.register(Profile)
