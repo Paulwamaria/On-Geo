@@ -194,6 +194,78 @@ font-size:30px;
     color: #f2c14e;
 }
 
+.about-shell {
+    color: #ffffff;
+    margin: 0 auto;
+    max-width: 1120px;
+    padding: 56px 18px 72px;
+}
+
+.about-hero {
+    background: rgba(9, 22, 30, 0.74);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    box-shadow: 0 22px 56px rgba(0, 0, 0, 0.34);
+    margin: 0 auto;
+    max-width: 900px;
+    padding: 42px 36px;
+    text-align: center;
+}
+
+.about-title {
+    color: #ffffff;
+    font-size: 54px;
+    line-height: 1.08;
+    margin: 0;
+}
+
+.about-copy {
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 20px;
+    line-height: 1.65;
+    margin: 18px auto 0;
+    max-width: 760px;
+}
+
+.about-card-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 18px;
+}
+
+.about-card {
+    background: rgba(9, 22, 30, 0.76);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.26);
+    padding: 24px;
+}
+
+.about-card i {
+    align-items: center;
+    background: rgba(242, 193, 78, 0.14);
+    border-radius: 8px;
+    color: #f2c14e;
+    display: inline-flex;
+    height: 44px;
+    justify-content: center;
+    margin-bottom: 16px;
+    width: 44px;
+}
+
+.about-card h2 {
+    color: #ffffff;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.about-card p {
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.58;
+    margin: 0;
+}
+
 .ongeo-navbar {
     background: rgba(9, 22, 30, 0.92);
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
@@ -460,6 +532,22 @@ font-size:30px;
     }
 
     .home-feature-strip {
+        grid-template-columns: 1fr;
+    }
+
+    .about-hero {
+        padding: 34px 20px;
+    }
+
+    .about-title {
+        font-size: 38px;
+    }
+
+    .about-copy {
+        font-size: 17px;
+    }
+
+    .about-card-grid {
         grid-template-columns: 1fr;
     }
 }

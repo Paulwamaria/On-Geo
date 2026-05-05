@@ -1,19 +1,34 @@
 {% extends 'ongeo/base.html' %}
 
 {% block content %}
-<div class="row">
-
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <h1 class="ong text-info mt-5 sp">What is On-Geo Manager</h1>
-
-        <p class="text-white mt-3 fs">
-            On-Geo Manager is a web application that connects people in an organisation and restricts access to some of the
-            information or resources based on their geographical location. It automatically checks in the in atendants and sends the information to the database if they are within the area limmits.
+<section class="about-shell">
+    <div class="about-hero">
+        <p class="section-kicker nvs">About On-Geo</p>
+        <h1 class="ong about-title">What is On-Geo Manager?</h1>
+        <p class="about-copy">
+            On-Geo Manager connects people in an organisation and controls access to selected resources based on location.
+            It helps communities manage updates, notices, and attendance from one place.
         </p>
     </div>
-    <div class="col-md-2"></div>
 
-</div>
+    <div class="about-card-grid">
+        <article class="about-card">
+            <i class="fas fa-map-marker-alt"></i>
+            <h2 class="nvs">Location aware</h2>
+            <p>Compare user location against active checkpoints before recording attendance.</p>
+        </article>
 
+        <article class="about-card">
+            <i class="fas fa-clipboard-check"></i>
+            <h2 class="nvs">Attendance first</h2>
+            <p>Keep a daily register of people who are present within the accepted range.</p>
+        </article>
+
+        <article class="about-card">
+            <i class="fas fa-bullhorn"></i>
+            <h2 class="nvs">Community updates</h2>
+            <p>Share posts and notices with the active organisation or community.</p>
+        </article>
+    </div>
+</section>
 {% endblock %}
