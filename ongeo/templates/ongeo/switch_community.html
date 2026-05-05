@@ -2,58 +2,43 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
-<div class="row">
-    <div class="col-md-2">
-
-    </div>
-    <div class="col-md-6">
-        <div class="content-section container">
-            <div class="media switch-com">
-                <img class=" prof-img" src="{{user.profile.profile_pic.url}}" id="prof-pic">
-                <div class="media-body">
-                    <h2 class="account-heading text-info">{{user.username}}</h2>
-                    <p class="text-info">{{user.email}}</p>
-                </div>
+<section class="community-shell">
+    <div class="community-panel">
+        <div class="community-profile">
+            <img class="community-avatar" src="{{ user.profile.profile_pic.url }}" id="prof-pic"
+                alt="{{ user.username }} profile picture">
+            <div>
+                <p class="section-kicker nvs">Active workspace</p>
+                <h1 class="ong community-title">Switch Community</h1>
+                <p class="community-copy">{{ user.username }}{% if user.profile.community %} is currently in {{ user.profile.community }}{% else %}, select a community to continue{% endif %}.</p>
             </div>
+        </div>
 
-            <form action="{% url 'switch-community' %}" method="POST" class="bg-info">
-                 {% csrf_token %}
-                 <label for="moringa">Moringa</label>
-                 <input type="radio" id="moringa" value="Moringa" name="community" >
-                 <label for="safaricom">Safaricom</label>
-                 <input type="radio" id="safaricom" value="Safaricom" name="community" >
-                 <label for="airtel">Airtel</label>
-                 <input type="radio" id="airtel" value="Airtel" name="community" >
-                <!--<fieldset class="form-group ">
-                    <legend class="border-bottom mb-4 text-white text-center"> Select a community</legend>
-                    {{c_form|crispy}}
-
-                    
+        <form action="{% url 'switch-community' %}" method="POST" class="community-form">
+            {% csrf_token %}
+            <fieldset>
+                <legend class="nvs">Choose your community</legend>
+                <div class="community-options">
                     {% for radio in c_form.community %}
-
-                    <label class="text-white ml-3" for="{{ radio.id_for_label }}">
-                        {{ radio.choice_label }}
-                        <span class="radio">{{ radio.tag }}</span>
+                    <label class="community-option" for="{{ radio.id_for_label }}">
+                        {{ radio.tag }}
+                        <span class="community-option-body">
+                            <span class="community-option-icon"><i class="fas fa-building"></i></span>
+                            <span>
+                                <span class="community-option-title">{{ radio.choice_label }}</span>
+                                <span class="community-option-subtitle">Make this your active community</span>
+                            </span>
+                        </span>
                     </label>
                     {% endfor %}
-
-                </fieldset> -->
-
-                <div class="form-group">
-                    <input type="submit" class="btn btn-primary btn-sm sign form-control" value="Switch Community"
-                        id='update'>
                 </div>
+            </fieldset>
 
-
-
-            </form>
-
-        </div>
-        <div class="col-md-4">
-
-        </div>
+            <button type="submit" class="btn community-submit nvs" id="update">
+                <i class="fas fa-exchange-alt"></i>
+                Switch community
+            </button>
+        </form>
     </div>
-
-
-    {% endblock %}
+</section>
+{% endblock %}
