@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    navigator.geolocation.getCurrentPosition(onPositionUpdate);
+    navigator.geolocation.getCurrentPosition(onPositionUpdate, showLocationWarning);
 });
 
 // function getLoc(){om
@@ -56,12 +56,25 @@ function onPositionUpdate(position) {
                     }
                 })
             } else if (data.distance > 50) {
-                document.getElementById("outb").innerHTML = "We are sorry the system can\'t check you in, you are not Within Moringa"
-  
-               
+                var warning = document.getElementById("attendance-warning");
+                var warningMessage = document.getElementById("outb");
+
+                warningMessage.textContent = "We are sorry, the system can't check you in because you are outside the allowed range.";
+                warning.removeAttribute("hidden");
+                warning.style.display = "flex";
             }
         });
-    console.log(name);
+}
 
+function showLocationWarning() {
+    var warning = document.getElementById("attendance-warning");
+    var warningMessage = document.getElementById("outb");
 
+    if (!warning || !warningMessage) {
+        return;
+    }
+
+    warningMessage.textContent = "We could not access your location. Enable location permissions to check in.";
+    warning.removeAttribute("hidden");
+    warning.style.display = "flex";
 }

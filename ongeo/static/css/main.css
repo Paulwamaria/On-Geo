@@ -1072,18 +1072,27 @@ font-size:30px;
 }
 
 .attendance-alert {
-    color: #f3a7a1;
-    font-size: 22px;
+    align-items: center;
+    color: #f2c14e;
+    display: flex;
+    font-size: 19px;
+    gap: 10px;
+    justify-content: center;
+    line-height: 1.5;
     margin: 24px auto 0;
     max-width: 760px;
     text-align: center;
 }
 
-.attendance-alert:not(:empty) {
-    background: rgba(209, 73, 91, 0.12);
-    border: 1px solid rgba(209, 73, 91, 0.28);
+.attendance-alert:not([hidden]) {
+    background: rgba(242, 193, 78, 0.1);
+    border: 1px solid rgba(242, 193, 78, 0.28);
     border-radius: 8px;
     padding: 16px 18px;
+}
+
+.attendance-alert[hidden] {
+    display: none;
 }
 
 .attendance-table-card {
