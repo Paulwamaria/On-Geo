@@ -147,9 +147,16 @@ display:none;
 
 .account-toggle {
     align-items: center;
+    border-radius: 999px;
     color: #ffffff !important;
     display: flex;
-    padding: 8px 0 8px 10px;
+    padding: 6px 10px;
+    transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.account-toggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
 .account-icon {
@@ -170,42 +177,122 @@ display:none;
 }
 
 .ongeo-dropdown {
-    background: #10252f;
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: #07171f !important;
+    border: 1px solid rgba(242, 193, 78, 0.22);
     border-radius: 8px;
     box-shadow: 0 18px 45px rgba(0, 0, 0, 0.34);
     margin-top: 12px;
-    min-width: 240px;
+    min-width: 270px;
     padding: 8px;
 }
 
-.ongeo-dropdown .dropdown-header {
-    color: rgba(255, 255, 255, 0.62);
-    font-size: 15px;
-    padding: 8px 12px;
+.account-menu-header {
+    align-items: center;
+    background: #10252f !important;
+    border: 1px solid rgba(242, 193, 78, 0.3);
+    border-radius: 8px;
+    display: flex;
+    margin-bottom: 8px;
+    padding: 12px;
+}
+
+.account-menu-avatar {
+    align-items: center;
+    background: #f2c14e;
+    border-radius: 8px;
+    color: #10252f;
+    display: inline-flex;
+    flex: 0 0 42px;
+    height: 42px;
+    justify-content: center;
+    margin-right: 12px;
+    width: 42px;
+}
+
+.account-menu-title,
+.account-menu-subtitle {
+    display: block;
+}
+
+.account-menu-title {
+    color: #ffffff;
+    font-size: 17px;
+    line-height: 1.2;
+}
+
+.account-menu-subtitle {
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 13px;
+    margin-top: 3px;
 }
 
 .ongeo-dropdown .dropdown-item {
     align-items: center;
     border-radius: 6px;
-    color: rgba(255, 255, 255, 0.86);
+    background: rgba(255, 255, 255, 0.04);
+    color: #f8fbfc !important;
     display: flex;
     font-size: 16px;
-    gap: 10px;
-    padding: 9px 12px;
+    gap: 11px;
+    min-height: 42px;
+    padding: 9px 10px;
+}
+
+.ongeo-dropdown .dropdown-item span:not(.dropdown-icon) {
+    color: #f8fbfc !important;
 }
 
 .ongeo-dropdown .dropdown-item:hover {
-    background-color: rgba(242, 193, 78, 0.14);
-    color: #ffffff;
+    background-color: #f2c14e;
+    color: #10252f !important;
+}
+
+.ongeo-dropdown .dropdown-item:hover span:not(.dropdown-icon) {
+    color: #10252f !important;
+}
+
+.dropdown-icon {
+    align-items: center;
+    background: rgba(242, 193, 78, 0.14);
+    border-radius: 6px;
+    color: #f2c14e;
+    display: inline-flex;
+    flex: 0 0 30px;
+    height: 30px;
+    justify-content: center;
+    width: 30px;
+}
+
+.ongeo-dropdown .dropdown-item:hover .dropdown-icon {
+    background: rgba(16, 37, 47, 0.14);
+    color: #10252f;
 }
 
 .ongeo-dropdown .dropdown-divider {
     border-top-color: rgba(255, 255, 255, 0.12);
+    margin: 8px 4px;
 }
 
 .ongeo-dropdown .logout-link {
-    color: #f3a7a1;
+    color: #ffcbc7 !important;
+}
+
+.ongeo-dropdown .logout-link span:not(.dropdown-icon) {
+    color: #ffcbc7 !important;
+}
+
+.ongeo-dropdown .logout-link:hover {
+    background-color: #d1495b;
+    color: #ffffff !important;
+}
+
+.ongeo-dropdown .logout-link:hover span:not(.dropdown-icon) {
+    color: #ffffff !important;
+}
+
+.ongeo-dropdown .logout-link:hover .dropdown-icon {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
 }
 
 .ongeo-toggler {

@@ -50,40 +50,54 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right ongeo-dropdown" aria-labelledby="ongeoAccountMenu">
                     {% if user.is_authenticated %}
-                    <span class="dropdown-header nvs">Signed in as {{ user.username }}</span>
+                    <div class="account-menu-header">
+                        <span class="account-menu-avatar"><i class="fas fa-user"></i></span>
+                        <span>
+                            <span class="account-menu-title nvs">{{ user.username }}</span>
+                            <span class="account-menu-subtitle">{{ user.profile.community|default:"No community selected" }}</span>
+                        </span>
+                    </div>
 
                     <a class="dropdown-item nvs" href="{% url 'attendance' %}">
-                        <i class="fas fa-location-arrow"></i> Check-in status
+                        <span class="dropdown-icon"><i class="fas fa-location-arrow"></i></span>
+                        <span>Check-in status</span>
                     </a>
 
                     <a class="dropdown-item nvs" href="{% url 'profile-detail' user.username %}">
-                        <i class="fas fa-id-card"></i> Profile
+                        <span class="dropdown-icon"><i class="fas fa-id-card"></i></span>
+                        <span>Profile</span>
                     </a>
 
                     <a class="dropdown-item nvs" href="{% url 'post-create' %}">
-                        <i class="fas fa-plus-circle"></i> New post
+                        <span class="dropdown-icon"><i class="fas fa-plus-circle"></i></span>
+                        <span>New post</span>
                     </a>
 
                     <a class="dropdown-item nvs" href="{% url 'notification-create' %}">
-                        <i class="fas fa-bullhorn"></i> Add notice
+                        <span class="dropdown-icon"><i class="fas fa-bullhorn"></i></span>
+                        <span>Add notice</span>
                     </a>
 
                     <a class="dropdown-item nvs" href="{% url 'switch-community' %}">
-                        <i class="fas fa-exchange-alt"></i> Switch community
+                        <span class="dropdown-icon"><i class="fas fa-exchange-alt"></i></span>
+                        <span>Switch community</span>
                     </a>
 
                     <div class="dropdown-divider"></div>
 
                     <a class="dropdown-item nvs logout-link" href="{% url 'logout' %}">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <span class="dropdown-icon"><i class="fas fa-sign-out-alt"></i></span>
+                        <span>Logout</span>
                     </a>
                     {% else %}
                     <a class="dropdown-item nvs" href="{% url 'login' %}">
-                        <i class="fas fa-sign-in-alt"></i> Log in
+                        <span class="dropdown-icon"><i class="fas fa-sign-in-alt"></i></span>
+                        <span>Log in</span>
                     </a>
 
                     <a class="dropdown-item nvs" href="{% url 'register' %}">
-                        <i class="fas fa-user-plus"></i> Register
+                        <span class="dropdown-icon"><i class="fas fa-user-plus"></i></span>
+                        <span>Register</span>
                     </a>
 
 
