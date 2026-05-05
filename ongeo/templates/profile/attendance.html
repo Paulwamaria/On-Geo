@@ -1,40 +1,38 @@
-{%extends "ongeo/base.html"%}
+{% extends "ongeo/base.html" %}
 {% load crispy_forms_tags %}
+
 {% block content %}
-<div class="container-fluid">
-    <div class="out-of-bound text-center text-danger">
-        <h3 class="out-of-bound text-center mt-2 text-danger" id="outb"></h3>
+<div class="attendance-shell">
+    <section class="attendance-hero">
+        <p class="section-kicker nvs">Location check-in</p>
+        <h1 class="ong attendance-title">Attendance Status</h1>
+        <p class="attendance-copy">Your location is checked against the active community checkpoint before attendance is recorded.</p>
+    </section>
 
-    </div>
-    <div class="row">
+    <div class="attendance-grid">
+        <section class="attendance-card status-card">
+            <div class="attendance-icon">
+                <i class="fas fa-location-arrow"></i>
+            </div>
+            <div>
+                <h2 class="nvs">Checking your location</h2>
+                <p>Keep this page open while your browser confirms whether you are within range.</p>
+            </div>
+        </section>
 
-        <div class="col-md-6">
-            <div class="card-b bg-info ">
-
-                <div class="card bg-info">
-                    <div class="card-header">
-                        <h3 class="text-center text-white">Checked in as: </h3>
-                    </div>
-
-                    <div class="card-body">
-                        <ol class="" id="inattendance">
-
-                            </0l>
-
-                    </div>
+        <section class="attendance-card card-b">
+            <div class="attendance-card-header">
+                <div>
+                    <p class="section-kicker nvs">Checked in as</p>
+                    <h2>Attendance confirmed</h2>
                 </div>
-
+                <span class="success-badge"><i class="fas fa-check"></i></span>
             </div>
 
-
-
-        </div>
-        <div class="col-md-6">
-
-        </div>
-
-
+            <ol class="attendance-confirm-list" id="inattendance"></ol>
+        </section>
     </div>
-</div>
 
+    <div class="attendance-alert" id="outb"></div>
+</div>
 {% endblock %}

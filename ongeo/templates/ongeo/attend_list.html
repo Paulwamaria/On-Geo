@@ -1,49 +1,46 @@
 {% extends 'ongeo/base.html' %}
 {% load django_tables2 %}
 
-
 {% block content %}
-<div class="container bg-info">
-    <h2 class="text-white text-center">In attendance today:</h2>
-    <!-- <div class="">
-            {% render_table table %}
-    </div> -->
-    <div class="table-responsive text-nowrap">
+<div class="attendance-shell">
+    <section class="attendance-hero">
+        <p class="section-kicker nvs">Daily register</p>
+        <h1 class="ong attendance-title">In Attendance Today</h1>
+    </section>
 
-        <table id="dtBasicExample" class="table table-striped">
-          <thead>
-            <tr class="primary-color-dark text-white">
-                <th scope="col">Username</th>
-                <th scope="col">Date</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Last Login</th>
-            </tr>
-          </thead>
-          <tbody>
-              {% for item in queryset %}
-
-            <tr>
-              <!-- <th scope="row">1</th> -->
-              <td>{{item.user}}</td>
-                  <td>{{item.checked_in_on}}</td>
-                  <td>{{item.first_name}}</td>
-                  <td>{{item.last_name}}</td>
-                  {% if request.user.is_authenticated and item.user == request.user %}
-                  <td class="text-primary">online</td>
-                  {% else %}
-                  <td>{{item.last_seen}}</td>
-                  {% endif %}
-            </tr>
-            {% endfor %}
-
-          </tbody>
-        </table>
-
-      </div>
- 
+    <section class="attendance-table-card">
+        <div class="attendance-table-wrap">
+            <table id="dtBasicExample" class="attendance-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Username</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Last Login</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in queryset %}
+                    <tr>
+                        <td>{{ item.user }}</td>
+                        <td>{{ item.checked_in_on }}</td>
+                        <td>{{ item.first_name }}</td>
+                        <td>{{ item.last_name }}</td>
+                        {% if request.user.is_authenticated and item.user == request.user %}
+                        <td><span class="online-pill">online</span></td>
+                        {% else %}
+                        <td>{{ item.last_seen }}</td>
+                        {% endif %}
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty-table">No attendance records yet today.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
 </div>
-
-
 {% endblock %}
-
