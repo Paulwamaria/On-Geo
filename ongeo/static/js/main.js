@@ -58,12 +58,27 @@ function onPositionUpdate(position) {
             } else if (data.distance > 50) {
                 var warning = document.getElementById("attendance-warning");
                 var warningMessage = document.getElementById("outb");
+                var distanceFromCheckpoint = formatDistance(data.distance);
 
-                warningMessage.textContent = "We are sorry, the system can't check you in because you are outside the allowed range.";
+                warningMessage.textContent = "We are sorry, the system can't check you in because you are " + distanceFromCheckpoint + " from the checkpoint. The allowed range is 50 m.";
                 warning.removeAttribute("hidden");
                 warning.style.display = "flex";
             }
         });
+}
+
+function formatDistance(distanceInMeters) {
+    var meters = Number(distanceInMeters);
+
+    if (!Number.isFinite(meters)) {
+        return "outside the allowed range";
+    }
+
+    if (meters >= 1000) {
+        return (meters / 1000).toFixed(2) + " km";
+    }
+
+    return Math.round(meters) + " m";
 }
 
 function showLocationWarning() {
