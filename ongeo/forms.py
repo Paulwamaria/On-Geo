@@ -76,7 +76,7 @@ class UserAttendanceForm(forms.ModelForm):
 
 
 
-CommunityChoices = [
+DEFAULT_COMMUNITY_CHOICES = [
    
        ('Moringa','Moringa'),
         ('Safaricom','Safaricom'),
@@ -88,12 +88,28 @@ CommunityChoices = [
 
 
 class SwitchCommunityForm(forms.ModelForm):
-    community = forms.ChoiceField(label='Which Community are you switching to?', widget=forms.RadioSelect, choices=CommunityChoices)
+    community = forms.ChoiceField(label='Which Community are you switching to?', widget=forms.RadioSelect)
 
     class Meta:
         model = Profile
 
         fields = ['community']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        community_names = list(
+            Organisation.objects.order_by('organisation_name').values_list(
+                'organisation_name',
+                flat=True,
+            )
+        )
+        choices = [(name, name) for name in community_names]
+        if not choices:
+            choices = DEFAULT_COMMUNITY_CHOICES
+        self.fields['community'].choices = choices
+
+        if self.instance and self.instance.community:
+            self.fields['community'].initial = self.instance.community.organisation_name
 
 
 
