@@ -137,7 +137,18 @@ def get_distance(request):
 
         user_position = (user_latitude, user_longitude)
 
-        checkpoint = CheckPoint.objects.filter(is_active=True).first()
+        active_community = getattr(user.profile, 'community', None)
+        checkpoint = None
+        if active_community:
+            checkpoint = CheckPoint.objects.filter(
+                organisation=active_community,
+                is_active=True,
+            ).first()
+        if checkpoint is None:
+            checkpoint = CheckPoint.objects.filter(
+                organisation__isnull=True,
+                is_active=True,
+            ).first()
         fixed_position = (
             (checkpoint.point.y, checkpoint.point.x)
             if checkpoint
@@ -202,9 +213,13 @@ class PointCreateView(LoginRequiredMixin,CreateView):
      
     model = CheckPoint
     success_url = ('/')
-    fields = ['point','name']
+    fields = ['point','name','is_active']
 
     def form_valid(self,form):
+        if self.request.user.profile.community is None:
+            messages.error(self.request, "Select a community before creating a checkpoint.")
+            return redirect('switch-community')
+        form.instance.organisation = self.request.user.profile.community
         return super().form_valid(form)
 
 

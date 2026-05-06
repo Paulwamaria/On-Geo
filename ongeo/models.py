@@ -129,6 +129,13 @@ class AllAtendees(models.Model):
 class CheckPoint(models.Model):
     point = models.PointField()
     name = models.CharField(max_length=60)
+    organisation = models.ForeignKey(
+        Organisation,
+        related_name='checkpoints',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
     is_active = models.BooleanField(default = False)
 
 

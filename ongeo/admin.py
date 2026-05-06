@@ -30,7 +30,10 @@ class PostAdmin(OSMGeoAdmin):
 
 @admin.register(CheckPoint)
 class CheckPointAdmin(OSMGeoAdmin):
-    list_display = ('point', 'name')
+    fields = ('name', 'organisation', 'point', 'is_active')
+    list_display = ('name', 'organisation', 'point', 'is_active')
+    list_filter = ('organisation', 'is_active')
+    search_fields = ('name', 'organisation__organisation_name')
 
   
 @admin.register(Attendance)

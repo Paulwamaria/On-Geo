@@ -1,10 +1,11 @@
 from django.contrib.auth.models import User
+from django.contrib.gis.geos import Point
 from django.test import Client, RequestFactory, SimpleTestCase, TestCase
 from django.urls import resolve, reverse
 
 from . import views
 from .forms import OnGeoRegistrationForm
-from .models import AllAtendees, Notification, Organisation, Post, Profile
+from .models import AllAtendees, CheckPoint, Notification, Organisation, Post, Profile
 
 
 class PublicRouteTests(SimpleTestCase):
@@ -82,6 +83,15 @@ class AccountWorkflowTests(TestCase):
         user.profile.refresh_from_db()
         self.assertEqual(user.profile.community.organisation_name, "Moringa")
 
+    def test_switch_community_lists_database_organisations(self):
+        user = User.objects.create_user(username="paul", password="StrongPass123!")
+        Organisation.objects.create(organisation_name="New Community")
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("switch-community"))
+
+        self.assertContains(response, "New Community")
+
 
 class ContentWorkflowTests(TestCase):
     def setUp(self):
@@ -128,3 +138,26 @@ class ContentWorkflowTests(TestCase):
         self.client.get(reverse("logins"))
 
         self.assertEqual(AllAtendees.objects.filter(user=self.user).count(), 1)
+
+    def test_get_distance_uses_active_community_checkpoint(self):
+        other_organisation = Organisation.objects.create(organisation_name="Other")
+        CheckPoint.objects.create(
+            name="Other checkpoint",
+            organisation=other_organisation,
+            point=Point(0, 0),
+            is_active=True,
+        )
+        CheckPoint.objects.create(
+            name="Community checkpoint",
+            organisation=self.organisation,
+            point=Point(36.7927116, -1.3034532),
+            is_active=True,
+        )
+
+        response = self.client.get(
+            reverse("get-distance"),
+            {"user_latitude": "-1.3034532", "user_longitude": "36.7927116"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertLess(response.json()["distance"], 1)
