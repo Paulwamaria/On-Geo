@@ -10,6 +10,8 @@ On-Geo Manager is a Django web application that connects people in an organisati
 
 Paul Kamau Wamaria
 
+>> A simple Moringa Coursework Project
+
 
 
 ## User Stories
