@@ -51,7 +51,7 @@ def register(request):
 def attendance(request):
     if request.method == 'POST':
         attnd_form = UserAttendanceForm(request.POST)
-        
+
             
         if attnd_form.is_valid():
             if request.user.profile.community is None:
@@ -64,7 +64,7 @@ def attendance(request):
 
             context={
             'attnd_form':attnd_form,
-        
+
         }
         return render(request, 'profile/attendance.html',context)
 
@@ -136,6 +136,7 @@ def get_distance(request):
             return JsonResponse({'error': 'Missing user coordinates'}, status=400)
 
         user_position = (user_latitude, user_longitude)
+        print("User Position:", user_position)
 
         active_community = getattr(user.profile, 'community', None)
         checkpoint = None
@@ -143,20 +144,40 @@ def get_distance(request):
             checkpoint = CheckPoint.objects.filter(
                 organisation=active_community,
                 is_active=True,
-            ).first()
+            ).order_by('-id').first()
+        if active_community and checkpoint is None:
+            return JsonResponse(
+                {
+                    'error': (
+                        f"No active checkpoint is linked to "
+                        f"{active_community.organisation_name}."
+                    ),
+                },
+                status=404,
+            )
+
         if checkpoint is None:
             checkpoint = CheckPoint.objects.filter(
                 organisation__isnull=True,
                 is_active=True,
-            ).first()
+            ).order_by('-id').first()
+
+        if checkpoint is None:
+            return JsonResponse(
+                {'error': "No active checkpoint is configured."},
+                status=404,
+            )
+
         fixed_position = (
-            (checkpoint.point.y, checkpoint.point.x)
-            if checkpoint
-            else (-1.3034531999999999, 36.7927116)
+            checkpoint.point.y,
+            checkpoint.point.x,
         )
+
+        print("Checkpoint Position:", fixed_position)
 
 
         distance = geopy_distance(user_position, fixed_position)
+        print("Distance (meters):", distance.meters)
         
         my_user ={
             "first_name":user.first_name,
@@ -220,7 +241,13 @@ class PointCreateView(LoginRequiredMixin,CreateView):
             messages.error(self.request, "Select a community before creating a checkpoint.")
             return redirect('switch-community')
         form.instance.organisation = self.request.user.profile.community
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        if self.object.is_active:
+            CheckPoint.objects.filter(
+                organisation=self.object.organisation,
+                is_active=True,
+            ).exclude(pk=self.object.pk).update(is_active=False)
+        return response
 
 
 class PostCreateView(LoginRequiredMixin,CreateView):

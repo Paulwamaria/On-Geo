@@ -53,8 +53,12 @@
     }
 
     onReady(function () {
-        var field = document.getElementById("id_location");
-        var map = document.getElementById("id_location_admin_map") || document.getElementById("id_location_div_map");
+        var fieldName = document.getElementById("id_point") ? "point" : "location";
+        var field = document.getElementById("id_" + fieldName);
+        var map = (
+            document.getElementById("id_" + fieldName + "_admin_map") ||
+            document.getElementById("id_" + fieldName + "_div_map")
+        );
 
         if (!field || !map || !navigator.geolocation) {
             return;
@@ -84,10 +88,11 @@
                 function (position) {
                     var longitude = position.coords.longitude;
                     var latitude = position.coords.latitude;
-                    var applied = setLegacyLocation(window.geodjango_location, longitude, latitude);
+                    var widget = window["geodjango_" + fieldName];
+                    var applied = setLegacyLocation(widget, longitude, latitude);
 
                     if (!applied) {
-                        applied = setModernLocation(window.geodjango_location, longitude, latitude);
+                        applied = setModernLocation(widget, longitude, latitude);
                     }
 
                     if (!applied) {

@@ -4,6 +4,8 @@
 
 On-Geo Manager is a Django web application that connects people in an organisation and restricts access to selected information or resources based on their geographical location.
 
+![On-Geo Manager homepage](docs/homepage.png)
+
 ## Developer
 
 Paul Kamau Wamaria

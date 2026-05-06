@@ -4,6 +4,7 @@ from django.test import Client, RequestFactory, SimpleTestCase, TestCase
 from django.urls import resolve, reverse
 
 from . import views
+from .admin import CheckPointAdminForm
 from .forms import OnGeoRegistrationForm
 from .models import AllAtendees, CheckPoint, Notification, Organisation, Post, Profile
 
@@ -93,6 +94,24 @@ class AccountWorkflowTests(TestCase):
         self.assertContains(response, "New Community")
 
 
+class CheckPointAdminFormTests(TestCase):
+    def test_coordinate_inputs_create_checkpoint_point(self):
+        form = CheckPointAdminForm(
+            data={
+                "name": "Office",
+                "latitude": "-1.3034532",
+                "longitude": "36.7927116",
+                "point": "",
+                "is_active": "on",
+            }
+        )
+
+        self.assertTrue(form.is_valid(), form.errors)
+        point = form.cleaned_data["point"]
+        self.assertEqual(point.x, 36.7927116)
+        self.assertEqual(point.y, -1.3034532)
+
+
 class ContentWorkflowTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
@@ -161,3 +180,34 @@ class ContentWorkflowTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertLess(response.json()["distance"], 1)
+
+    def test_get_distance_uses_newest_active_community_checkpoint(self):
+        CheckPoint.objects.create(
+            name="Old checkpoint",
+            organisation=self.organisation,
+            point=Point(0, 0),
+            is_active=True,
+        )
+        CheckPoint.objects.create(
+            name="New checkpoint",
+            organisation=self.organisation,
+            point=Point(36.7927116, -1.3034532),
+            is_active=True,
+        )
+
+        response = self.client.get(
+            reverse("get-distance"),
+            {"user_latitude": "-1.3034532", "user_longitude": "36.7927116"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertLess(response.json()["distance"], 1)
+
+    def test_get_distance_reports_missing_active_community_checkpoint(self):
+        response = self.client.get(
+            reverse("get-distance"),
+            {"user_latitude": "-1.3034532", "user_longitude": "36.7927116"},
+        )
+
+        self.assertEqual(response.status_code, 404)
+        self.assertIn("No active checkpoint is linked", response.json()["error"])

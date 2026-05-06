@@ -1,5 +1,18 @@
 $(document).ready(function () {
-    navigator.geolocation.getCurrentPosition(onPositionUpdate, showLocationWarning);
+    if (!navigator.geolocation) {
+        showAttendanceWarning("Your browser does not support location check-in.");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        onPositionUpdate,
+        showLocationWarning,
+        {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+            timeout: 20000
+        }
+    );
 });
 
 // function getLoc(){om
@@ -10,6 +23,9 @@ $(document).ready(function () {
 function onPositionUpdate(position) {
     var lat = position.coords.latitude;
     var long = position.coords.longitude;
+    var accuracy = position.coords.accuracy;
+
+    console.log("My Position is, " + lat + " " + long + " accuracy: " + accuracy + "m");
     $.ajax({
             url: '/distance/',
             data: {
@@ -59,11 +75,21 @@ function onPositionUpdate(position) {
                 var warning = document.getElementById("attendance-warning");
                 var warningMessage = document.getElementById("outb");
                 var distanceFromCheckpoint = formatDistance(data.distance);
+                var accuracyMessage = formatAccuracy(accuracy);
 
-                warningMessage.textContent = "We are sorry, the system can't check you in because you are " + distanceFromCheckpoint + " from the checkpoint. The allowed range is 50 m.";
+                warningMessage.textContent = "We are sorry, the system can't check you in because you are " + distanceFromCheckpoint + " from the checkpoint. The allowed range is 50 m." + accuracyMessage;
                 warning.removeAttribute("hidden");
                 warning.style.display = "flex";
             }
+        })
+        .fail(function (xhr) {
+            var message = "We could not check your distance from the checkpoint.";
+
+            if (xhr.responseJSON && xhr.responseJSON.error) {
+                message = xhr.responseJSON.error;
+            }
+
+            showAttendanceWarning(message);
         });
 }
 
@@ -81,7 +107,27 @@ function formatDistance(distanceInMeters) {
     return Math.round(meters) + " m";
 }
 
-function showLocationWarning() {
+function formatAccuracy(accuracyInMeters) {
+    var meters = Number(accuracyInMeters);
+
+    if (!Number.isFinite(meters)) {
+        return "";
+    }
+
+    return " Your browser reported location accuracy of +/- " + formatDistance(meters) + ".";
+}
+
+function showLocationWarning(error) {
+    var message = "We could not access your location. Enable location permissions to check in.";
+
+    if (error && error.code === error.TIMEOUT) {
+        message = "We could not get a precise location in time. Move near a window or outside, then try again.";
+    }
+
+    showAttendanceWarning(message);
+}
+
+function showAttendanceWarning(message) {
     var warning = document.getElementById("attendance-warning");
     var warningMessage = document.getElementById("outb");
 
@@ -89,7 +135,7 @@ function showLocationWarning() {
         return;
     }
 
-    warningMessage.textContent = "We could not access your location. Enable location permissions to check in.";
+    warningMessage.textContent = message;
     warning.removeAttribute("hidden");
     warning.style.display = "flex";
 }
